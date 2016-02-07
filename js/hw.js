@@ -320,13 +320,13 @@ function fetchItemsAdmin() {
 function renderItem(json, state) {
     var obj = document.getElementById('item')
     var cdate = new Date(json.created*1000).toDateString()
-    obj.innerHTML = "<h2>Item #" + state + ": <span style='color: #369;'>" + json.title + "</span></h2>"
+    obj.innerHTML = "<h2>Task #" + state + ":<br/><span style='color: #369;'>" + json.title + "</span></h2>"
     obj.innerHTML += "<p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
         "<b>Created by:</b> " + json.author + "@apache.org<br/>" +
         "<b>Task added: </b>" + cdate + "<br/>" +
         "<b>Difficulty: </b> <img style='width: 16px; height: 16px; vertical-align: middle;' src='/images/level_" + (parseInt(json.difficulty)+1) + ".png'/> " + diff[json.difficulty] + " - " + diff_explanation[parseInt(json.difficulty)] + "<br/>" +
         "<b>Task type:</b> " + types_long[json.type] + "<br/>" +
-        "<b>Additional information:</b> <a href='" + json.url + "'>" + json.url + "</a><br/>" +
+        (json.url && json.url.length > 10 ? "<b>Additional information:</b> <a href='" + json.url + "'>" + json.url + "</a><br/>" : "")+
         ((json.estimate && json.estimate.length > 0) ? "<b>Estimated time to complete:</b> " + json.estimate : "") +
         ((json.timeout && json.timeout > 0) ? "<b>Task expires:</b> " + new Date(json.timeout*1000).toDateString() : "") +
         "<blockquote style='text-align: left;'><q>" + json.description + "</q></blockquote>" +
