@@ -156,11 +156,11 @@ for (var i in divs) {
         widgetobj = divs[i]
         widgetproject = dn
         widgettitle = dti ? dti : dn
-        fetchItemsWidget([],[],[dn])
         var css = document.createElement('link')
         css.rel = "stylesheet";
         css.href = "https://helpwanted.apache.org/css/hw2.css";
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(css)
+        fetchItemsWidget([],[],[dn])
         break
     }
 }
