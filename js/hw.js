@@ -221,17 +221,25 @@ function sw(id) {
     obj.style.display = op
 }
 
-function reallyPopulate(json) {
+function reallyPopulate(json, state) {
     var pro = []
     var obj = document.getElementById('project')
-    for (var i in json.committees) {
+    
+    // optgroup for spoken/written
+    var optg = document.createElement('optgroup')
+    optg.label = state ? "Non-TLPs:" : "Top Level Projects:"
+    obj.appendChild(optg)
+    
+    for (var i in (json.committees || json.groups)) {
         pro.push(i)
         var opt = document.createElement('option')
         opt.text = i
         opt.setAttribute("value", i)
         obj.appendChild(opt)
     }
-    
+    if (state) {
+        return
+    }
     var obj = document.getElementById('languages')
     // optgroup for programming
     var optg = document.createElement('optgroup')
@@ -257,10 +265,13 @@ function reallyPopulate(json) {
         opt.setAttribute("value", spoken_langs[i])
         obj.appendChild(opt)
     }
+    if (!state) {
+        getAsyncJSON('https://whimsy.apache.org/public/public_nonldap_groups.json', 'other', reallyPopulate)
+    }
 }
 
 function populateAdminForm() {
-    getAsyncJSON('https://whimsy.apache.org/public/public_ldap_committees.json', null, reallyPopulate)
+    getAsyncJSON('https://whimsy.apache.org/public/public_ldap_committees.json', false, reallyPopulate)   
 }
 
 function displayItems(json, state) {
