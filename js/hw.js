@@ -279,7 +279,7 @@ function displayItems(json, state) {
         var z = parseInt(i)+1
         var ptype = item.type.replace(/\s+/g, "")
         var cdate = new Date(item.created*1000).toLocaleString()
-        var lingos = (item.languages != 'n/a') ? "(" + item.languages + ") " : ""
+        var lingos = (item.languages != 'n/a') ? item.languages.split(",").join(", ") : ""
         
         // admin stuff
         var add = ""
