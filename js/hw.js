@@ -233,12 +233,23 @@ function reallyPopulate(json) {
     }
     
     var obj = document.getElementById('languages')
+    // optgroup for programming
+    var optg = document.createElement('optgroup')
+    optg.label = "Programming languages"
+    obj.appendChild(optg)
+    
+    // prog languages
     for (var i in langs) {
         var opt = document.createElement('option')
         opt.text = langs[i]
         opt.setAttribute("value", langs[i])
         obj.appendChild(opt)
     }
+    
+    // optgroup for spoken/written
+    var optg = document.createElement('optgroup')
+    optg.label = "Spoken languages"
+    obj.appendChild(optg)
     
     for (var i in spoken_langs) {
         var opt = document.createElement('option')
