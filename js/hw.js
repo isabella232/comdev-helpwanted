@@ -27,6 +27,14 @@ var types_long = {
     translation: 'Translation'
 }
 
+var diff_explanation = [
+    'This is an easy task that anyone can get started on',
+    'This requires a bit of knowledge of the project, but otherwise is an easy task',
+    'This requires a good knowledge of the project',
+    'This requires a good knowledge of the project and good technical skills',
+    'This requires intimate knowledge of the project and excellent technical skills'
+]
+
 var spoken_langs = ['english', 'french', 'german', 'spanish', 'russian', 'italian', 'japanese', 'chinese']
 var website_langs = ['css','javascript','html']
 var projects = ['all projects']
@@ -282,7 +290,7 @@ function displayItems(json, state) {
         tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left;' src='/images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
-        "<td>" + lingos + "</td><td style='text-align: left;'><img src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
+        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
         
         tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id +"\";' value='I am interested in this'/></td></tr>"
         
@@ -316,7 +324,7 @@ function renderItem(json, state) {
     obj.innerHTML += "<p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
         "<b>Created by:</b> " + json.author + "@apache.org<br/>" +
         "<b>Task added: </b>" + cdate + "<br/>" +
-        "<b>Difficulty: </b> <img style='width: 16px; height: 16px; vertical-align: middle;' src='/images/level_" + (parseInt(json.difficulty)+1) + ".png'/> " + diff[json.difficulty] + "<br/>" +
+        "<b>Difficulty: </b> <img style='width: 16px; height: 16px; vertical-align: middle;' src='/images/level_" + (parseInt(json.difficulty)+1) + ".png'/> " + diff[json.difficulty] + " - " + diff_explanation[parseInt(json.difficulty)] + "<br/>" +
         "<b>Task type:</b> " + types_long[json.type] + "<br/>" +
         "<b>Additional information:</b> <a href='" + json.url + "'>" + json.url + "</a><br/>" +
         ((json.estimate && json.estimate.length > 0) ? "<b>Estimated time to complete:</b> " + json.estimate : "") +

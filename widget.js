@@ -20,6 +20,14 @@ var widgettitle = null
 var hw_json = null
 var maxitems = 8
 
+var diff_explanation = [
+    'This is an easy task that anyone can get started on',
+    'This requires a bit of knowledge of the project, but otherwise is an easy task',
+    'This requires a good knowledge of the project',
+    'This requires a good knowledge of the project and good technical skills',
+    'This requires intimate knowledge of the project and excellent technical skills'
+]
+
 function getAsyncJSON(theUrl, xstate, callback) {
 	var xmlHttp = null;
 	if (window.XMLHttpRequest) {
@@ -107,7 +115,7 @@ function displayItemsWidget(json, state) {
         
         tbl += "<tr style='cursor: pointer; ' onclick=\"sw('hw_details_" + i + "');\"><td style='text-align: left;'><div class='itemNumber-widget'>" + z + "</div><img title='" + item.type + "' style='width:16px; height: 16px;' float: left;' src='/images/icon_" + ptype + ".png'/>" +
         item.title + "</td>" +
-        "<td>" + lingos + "</td><td style='text-align: left;'><img style='width:16px; height: 16px;' src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
+        "<td>" + lingos + "</td><td style='text-align: left;' title='" + diff_explanation[parseInt(item.difficulty)] + "'><img style='width:16px; height: 16px;' src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
         var fi = ""
         if (item.url && item.url.length > 10) {
             fi = "<b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/>"
