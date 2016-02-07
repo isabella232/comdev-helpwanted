@@ -18,6 +18,7 @@ var widgetobj = null
 var widgetproject = "???"
 var widgettitle = null
 var hw_json = null
+var maxitems = 8
 
 function getAsyncJSON(theUrl, xstate, callback) {
 	var xmlHttp = null;
@@ -82,10 +83,16 @@ function displayItemsWidget(json, state) {
         "</table>"
         return
     }
+    
+    
     for (var i in json) {
         var item = json[i]
         if (item.closed) {
             continue
+        }
+        if (parseInt(i) >= maxitems) {
+            tbl += "<tr><td colspan='5'><a href='javascript:void(0);' onclick='maxitems += 8; displayItemsWidget(null, {});'>Show more tasks</a></td></tr>"
+            break
         }
         var z = parseInt(i)+1
         var ptype = item.type.replace(/\s+/g, "")
