@@ -64,19 +64,6 @@
 	border: 1px solid #083051;
 }
 
-ul {
-	margin: 0px;
-	font-size: 0;
-}
-
-li {
-	font-size: 12px;
-	margin: 0;
-    padding: 0.2em;
-}
-
-
-
 
 .hwitems table a:link {
 	color: #666;
@@ -253,21 +240,6 @@ li {
 	
 }
 
-
-
-#step_menu { margin:0 auto; padding:5px; display:inline-table; list-style:none;text-shadow: none; }
-#step_menu li{ display:inline; float:left; background:url(/images/steps.png) no-repeat -50px bottom; height:41px; line-height:41px; font-size:11px; padding:0 30px 0 25px; position:relative;}
-#step_menu li span{ margin:0px; z-index:2000; background:url(/images/steps.png) no-repeat left bottom; display:block; position:absolute; height:41px; line-height:41px; width:13px; top:0; left:-10px; padding:0;}
-#step_menu li.inprogress { background-position:-50px 0px}
-#step_menu li.inprogress span, #step_menu li.lastinprogress span{background-position:left 0px }
-#step_menu li.done {background-position: -50px -41px}
-#step_menu li.done span, #step_menu li.ldone span {background-position:left -41px }
-#step_menu li.first, #step_menu li.done, #step_menu li.inprogress, #step_menu li.ldone, #step_menu li.lastinprogress { font-weight: bold; color:#333;}
-#step_menu li.first {background-position: -20px 0px }
-#step_menu li.fdone { background-position: -20px -41px }
-#step_menu li.last {background-position: right bottom }
-#step_menu li.lastinprogress { background-position: right 0}
-#step_menu li.ldone { background-position: right -41px}
 
 .itemNumber-widget {
   background: linear-gradient(to bottom, #cce843 0%,#90cc04 100%);
