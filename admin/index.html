@@ -1,0 +1,62 @@
+ <!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf8">
+<link rel="stylesheet" href="/css/hw.css">
+<link rel="stylesheet" href="/css/hw2.css">
+<script src="/js/hw.js" type="text/javascript"></script>
+<title>Help Wanted!</title>
+
+</head>
+<body onload="populateAdminForm(); fetchItemsAdmin();">
+    
+<div style="text-align: center;">
+    <h2><img src='/images/logo.png' title="Help Wanted!"/></h2>
+</div>
+
+<div id="innerpicker">
+    <form action="newtask.lua" method="post">
+        <h3>Create a new task:</h3>
+        <b>Project:</b> <select name="project" id="project"></select><br/>
+        <b>Task type:</b>
+            <select name="type">
+                <option value="programming">Programming task</option>
+                <option value="web design">Web design task</option>
+                <option value="documentation">Documentation task</option>
+                <option value="marketing">Marketing task</option>
+                <option value="community">Community task</option>
+            </select><br/>
+        <b>Title: </b> <input type="text" name="title"/><br/>
+        <b>Languages (optional): </b>
+            <select name="languages" id="languages" multiple="multiple" size="5">
+                
+            </select>
+            <br/>
+        <b>Difficulty:</b>
+            <select name="difficulty">
+                <option value="0">Beginner</option>
+                <option value="1">Journeyman</option>
+                <option value="2">Intermediate</option>
+                <option value="3">Advanced</option>
+                <option value="4">Expert</option>
+            </select>
+            <br/>
+        <b>Description:</b>
+            <textarea name="description" placeholder="Description goes here..." style="width: 500px; height: 200px;"></textarea><br/>
+        <b>Additional info URL: </b> <input type="text" name="url"/><br/>
+        <b>Collaborative?: </b> <input type="checkbox" name="collaboration" value="yes"/><br/>
+        <input type="submit" value="Save task"/>
+    </form>
+</div>
+
+<div id="hwitems" class="hwitems">
+    
+</div>
+
+<p style="font-size: 12px; font-style: italic; text-align: center;">
+    Managed by the <a href="https://community.apache.org/">Apache Community Development Project</a>.
+    Copyright 2016, the Apache Software Foundation.
+    Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>
+</p>
+</body>
+</html>
