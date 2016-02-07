@@ -17,7 +17,10 @@
 <div id="innerpicker">
     <form action="newtask.lua" method="post">
         <h3>Create a new task:</h3>
-        <b>Project:</b> <select name="project" id="project"></select><br/>
+        <b>Project:</b>
+        <select name="project" id="project">
+            <option value="">---------</option>    
+        </select><br/>
         <b>Task type:</b>
             <select name="type">
                 <option value="programming">Programming and Development</option>
