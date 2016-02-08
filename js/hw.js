@@ -342,7 +342,9 @@ function fetchItemsAdmin() {
 function renderItem(json, state) {
     var obj = document.getElementById('item')
     var cdate = new Date(json.created*1000).toDateString()
+    var rid = json.request_id.substring(0,8)
     obj.innerHTML = "<h2>Task #" + state + ":<br/><span style='color: #369;'>" + json.title + "</span></h2>"
+    var mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at https://helpwanted.apache.org/task.html?" + rid + "\n\n")
     obj.innerHTML += "<p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
         "<b>Created by:</b> " + json.author + "@apache.org<br/>" +
         "<b>Task added: </b>" + cdate + "<br/>" +
@@ -355,7 +357,7 @@ function renderItem(json, state) {
         "<br/></p>" +
         "<h3 style='text-align: left;'>How to help:</h3><p style='text-align: left;'>" +
         (json.curl && json.curl.length > 10 ? "<b>Contributor's guide for this project: </b><a href='" + json.curl + "'>" + json.curl + "</a><br/>" :"") +
-        "If you want to help with this task, please get in touch with the project at: dev@" + json.project + ".apache.org!" +
+        "If you want to help with this task, please get in touch with the project at: <a href=\""+mlink+"\">dev@" + json.project + ".apache.org</a>!" +
         "<br/>You should also check out the additional information URL (if such is provided above) for more information."
         "<br/>&nbsp;<br/>&nbsp;<br/></p>"
 }

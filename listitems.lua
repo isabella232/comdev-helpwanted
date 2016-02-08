@@ -35,7 +35,15 @@ function handle(r)
     local listdata = {}
 
     if get.id then
-        local doc = elastic.get('item', get.id)
+        local doc = nil
+        if #get.id == 8 and get.id:match("^([a-f0-9]+)$") then
+            docs = elastic.find('_id:' .. get.id .. "*", 1, 'item', 'created')
+            if docs and #docs == 1 then
+                doc = docs[1]
+            end
+        else 
+            doc = elastic.get('item', get.id)
+        end
         if doc then
             r:puts(JSON.encode(doc))
             return apache2.OK
