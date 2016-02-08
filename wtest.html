@@ -10,10 +10,20 @@
     <h2>Sample widget page</h2>
     This is a sample widget page. Just an ordinary HTML page with a widget attached by inserting the following code:
     <pre style='background: #FFE; border: 1px solid #666;'>
-&lt;div style="width: 700px;" type="helpwanted" project="httpd" description="the Apache HTTP Server">&lt;/div>
+&lt;div style="width: 700px;" type="helpwanted" project="<span id='pr'>httpd</span>" description="the Apache <span id='pru'>HTTPD</span> Project">&lt;/div>
 &lt;script src="https://helpwanted.apache.org/widget.js" type="text/javascript">&lt;/script>
     </pre>
-    <div style="width: 700px;" type="helpwanted" project="httpd" description="the Apache HTTP Server"></div>
+    <div id="foo" style="width: 700px;" type="helpwanted" project="httpd" description="the Apache HTTP Server"></div>
+<script type="text/javascript">
+    var pr = document.location.search.substr(1)
+    if (pr && pr.length > 1) {
+        pru = pr.replace(/^([a-z])/, function(a) { return a.toUpperCase()})
+        document.getElementById('pr').innerHTML = pr
+        document.getElementById('pru').innerHTML = pru
+        document.getElementById('foo').setAttribute("project", pr)
+        document.getElementById('foo').setAttribute("description", "the Apache " + pru + " project")
+    }
+</script>
 <script src="https://helpwanted.apache.org/widget.js" type="text/javascript"></script>
 </body>
 </html>
