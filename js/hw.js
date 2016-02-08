@@ -382,7 +382,7 @@ function renderItem(json, state) {
     var obj = document.getElementById('item')
     var cdate = new Date(json.created*1000).toDateString()
     var rid = json.request_id.substring(0,8)
-    json.description = json.description.replace("\n", "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
+    json.description = json.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
     obj.innerHTML = "<h2>Task #" + state + ":<br/><span style='color: #369;'>" + json.title + "</span></h2>"
     var mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at https://helpwanted.apache.org/task.html?" + rid + "\n\n")
     obj.innerHTML += "<p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +

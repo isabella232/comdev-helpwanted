@@ -161,7 +161,7 @@ function displayItemsWidget(json, state) {
         if (state.admin) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
-        item.description = item.description.replace("\n", "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
+        item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
         tbl += "<tr style='cursor: pointer; ' onclick=\"sw('hw_details_" + i + "');\"><td style='text-align: left;'><div class='itemNumber-widget'>" + z + "</div><img title='" + types_long[item.type] + "' style='width:16px; height: 16px;' float: left;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/>" +
         item.title + "</td>" +
         "<td>" + lingos + "</td><td style='text-align: left;' title='" + diff_explanation[parseInt(item.difficulty)] + "'><img style='width:16px; height: 16px;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
