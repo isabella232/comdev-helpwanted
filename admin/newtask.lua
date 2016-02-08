@@ -33,7 +33,8 @@ function handle(r)
     local lingos = r:escape_html(table.concat(postm.languages or {'n/a'}, ","))
     local difficulty = tonumber(post.difficulty) or 0
     local desc = r:escape_html(post.description)
-    local url = r:escape_html(post.url)
+    local url = r:escape_html(post.url or "")
+    local curl = r:escape_html(post.curl or "")
     local collab = (post.collaboration and post.collaboration == 'yes') and true or false
     
     
@@ -46,6 +47,7 @@ function handle(r)
             difficulty = difficulty,
             description = desc,
             url = url,
+            curl = curl,
             collaboration = collab,
             created = os.time(),
             author = r.user or "unknown",
