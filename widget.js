@@ -131,7 +131,7 @@ function displayItemsWidget(json, state) {
             fi = "<b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/>"
         }
         
-        tbl += "<tr style='display:none;' id='hw_details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote>" + fi + "<input type='button' class='dibbutton' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>"
+        tbl += "<tr style='display:none;' id='hw_details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Type: </b> " + types_long[item.type] + "<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote>" + fi + "<input type='button' class='dibbutton' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>"
         
     }
     tbl += "<tr><td colspan='4' style='text-align: center;'>Powered by <a href='https://helpwanted.apache.org/'>Help Wanted</a> - a task directory for Apache projects</td></tr></table>"
