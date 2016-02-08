@@ -20,6 +20,45 @@ var widgettitle = null
 var hw_json = null
 var maxitems = 8
 
+
+var hw_weburl = new RegExp(
+  "(" +
+    // protocol identifier
+    "(?:(?:https?|ftp)://)" +
+    // user:pass authentication
+    "(?:\\S+(?::\\S*)?@)?" +
+    "(?:" +
+      // IP address exclusion
+      // private & local networks
+      "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
+      "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
+      "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+      // IP address dotted notation octets
+      // excludes loopback network 0.0.0.0
+      // excludes reserved space >= 224.0.0.0
+      // excludes network & broacast addresses
+      // (first & last IP address of each class)
+      "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+      "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+      "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+    "|" +
+      // host name
+      "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+      // domain name
+      "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+      // TLD identifier
+      "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+      // TLD may end with dot
+      "\\.?" +
+    ")" +
+    // port number
+    "(?::\\d{2,5})?" +
+    // resource path
+    "(?:[/?#]([^,<>()\\[\\] \\t\\r\\n]|(<[^:\\s]*?>|\\([^:\\s]*?\\)|\\[[^:\\s]*?\\]))*)?" +
+    ")\\.?"
+  , "mig"
+);
+
 var diff_explanation = [
     'This is an easy task that anyone can get started on',
     'This requires a bit of knowledge of the project, but otherwise is an easy task',
@@ -122,7 +161,7 @@ function displayItemsWidget(json, state) {
         if (state.admin) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
-        
+        item.description = item.description.replace("\n", "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
         tbl += "<tr style='cursor: pointer; ' onclick=\"sw('hw_details_" + i + "');\"><td style='text-align: left;'><div class='itemNumber-widget'>" + z + "</div><img title='" + types_long[item.type] + "' style='width:16px; height: 16px;' float: left;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/>" +
         item.title + "</td>" +
         "<td>" + lingos + "</td><td style='text-align: left;' title='" + diff_explanation[parseInt(item.difficulty)] + "'><img style='width:16px; height: 16px;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
