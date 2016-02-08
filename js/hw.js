@@ -354,6 +354,7 @@ function renderItem(json, state) {
         "<blockquote style='text-align: left;'><q>" + json.description + "</q></blockquote>" +
         "<br/></p>" +
         "<h3 style='text-align: left;'>How to help:</h3><p style='text-align: left;'>" +
+        (json.curl && json.curl.length > 10 ? "<b>Contributor's guide for this project: </b><a href='" + json.curl + "'>" + json.curl + "</a><br/>" :"") +
         "If you want to help with this task, please get in touch with the project at: dev@" + json.project + ".apache.org!" +
         "<br/>You should also check out the additional information URL (if such is provided above) for more information."
         "<br/>&nbsp;<br/>&nbsp;<br/></p>"
