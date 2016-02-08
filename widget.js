@@ -28,6 +28,16 @@ var diff_explanation = [
     'This requires intimate knowledge of the project and excellent technical skills'
 ]
 
+var types_long = {
+    programming: "Programming and Development",
+    'web design': "Web Design",
+    marketing: 'Marketing and Publicity',
+    documentation: 'Documentation and Guides',
+    community: 'Community Outreach',
+    translation: 'Translation'
+}
+
+
 function getAsyncJSON(theUrl, xstate, callback) {
 	var xmlHttp = null;
 	if (window.XMLHttpRequest) {
@@ -113,7 +123,7 @@ function displayItemsWidget(json, state) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
         
-        tbl += "<tr style='cursor: pointer; ' onclick=\"sw('hw_details_" + i + "');\"><td style='text-align: left;'><div class='itemNumber-widget'>" + z + "</div><img title='" + item.type + "' style='width:16px; height: 16px;' float: left;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/>" +
+        tbl += "<tr style='cursor: pointer; ' onclick=\"sw('hw_details_" + i + "');\"><td style='text-align: left;'><div class='itemNumber-widget'>" + z + "</div><img title='" + types_long[item.type] + "' style='width:16px; height: 16px;' float: left;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/>" +
         item.title + "</td>" +
         "<td>" + lingos + "</td><td style='text-align: left;' title='" + diff_explanation[parseInt(item.difficulty)] + "'><img style='width:16px; height: 16px;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
         var fi = ""
