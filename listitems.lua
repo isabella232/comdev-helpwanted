@@ -78,6 +78,15 @@ function handle(r)
     
     local doc = elastic.find(dsl, 200, 'item', 'created')
     if doc and #doc > 0 then
+        if not get.all then
+            local vdoc = {}
+            for k, v in pairs(doc) do
+                if not v.closed then
+                    table.insert(vdoc, v)
+                end
+            end
+            doc = vdoc
+        end
         r:puts(JSON.encode(doc))
     else
         r:puts[[{}]]
