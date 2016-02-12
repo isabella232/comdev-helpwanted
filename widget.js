@@ -156,6 +156,7 @@ function displayItemsWidget(json, state) {
             tbl += "<tr><td colspan='5'><a href='javascript:void(0);' onclick='maxitems += 8; displayItemsWidget(null, {});'>Show more tasks</a></td></tr>"
             break
         }
+        var rid = (Math.random()*99999).toString(16)
         var z = parseInt(i)+1
         var ptype = item.type.replace(/\s+/g, "")
         var cdate = new Date(item.created*1000).toLocaleString()
@@ -167,7 +168,7 @@ function displayItemsWidget(json, state) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
         item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
-        tbl += "<tr style='cursor: pointer; ' onclick=\"sw('hw_details_" + i + "');\"><td style='text-align: left;'><div class='itemNumber-widget'>" + z + "</div><img title='" + types_long[item.type] + "' style='width:16px; height: 16px;' float: left;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/>" +
+        tbl += "<tr style='cursor: pointer; ' onclick=\"sw('hw_details_" + rid + "');\"><td style='text-align: left;'><div class='itemNumber-widget'>" + z + "</div><img title='" + types_long[item.type] + "' style='width:16px; height: 16px;' float: left;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/>" +
         item.title + "</td>" +
         "<td>" + lingos + "</td><td style='text-align: left;' title='" + diff_explanation[parseInt(item.difficulty)] + "'><img style='width:16px; height: 16px;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
         var fi = ""
@@ -175,7 +176,7 @@ function displayItemsWidget(json, state) {
             fi = "<b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/>"
         }
         
-        tbl += "<tr style='display:none;' id='hw_details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Type: </b> " + types_long[item.type] + "<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote>" + fi + "<input type='button' class='dibbutton' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>"
+        tbl += "<tr style='display:none;' id='hw_details_" + rid + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Type: </b> " + types_long[item.type] + "<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote>" + fi + "<input type='button' class='dibbutton' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>"
         
     }
     tbl += "<tr><td colspan='4' style='text-align: center;'>Powered by <a href='https://helpwanted.apache.org/'>Help Wanted</a> - a task directory for Apache projects</td></tr></table>"
