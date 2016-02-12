@@ -115,9 +115,9 @@ function wizard(step, arg) {
     }
     if (step == 1) {
         wstate = {}
-        obj.innerHTML = "<h2 style='text-align: center;'>What sort of work would you like to do?</h2>"
+        obj.innerHTML = "<div style='text-align: center;'><big >What sort of work would you like to do?</big></div>"
         for (var i in types) {
-            obj.innerHTML += "<div onclick='wizard(2, \"" + types[i] + "\");' class=\"wizitem\" style=\"float: left; width: 235px; height: 300px;\"><img style='height: 128px; padding: 8px; vertical-align: middle;' src='images/" + types[i].replace(/\s+/g, "") + "_large.png'/><br/><b style='font-size:11pt;'>" + types_long[types[i]] + "</b></div>"
+            obj.innerHTML += "<div onclick='wizard(2, \"" + types[i] + "\");' class=\"wizitem\" style=\"float: left; width: 235px; height: 250px;\"><img style='height: 96px; padding: 8px; vertical-align: middle;' src='images/" + types[i].replace(/\s+/g, "") + "_large.png'/><br/><b style='font-size:11pt;'>" + types_long[types[i]] + "</b></div>"
         }
         obj.innerHTML += "<div style='text-align: center;'><a href='javascript:void(0);' onclick='fetchItems();'><big>...Just show me everything</big></a></div>"
     }
@@ -331,7 +331,7 @@ function displayItems(json, state) {
         return
     }
     
-    obj.innerHTML = "Found " + numItems + " item" + (numItems != 1 ? "s" : "") + ":<br/>"
+    obj.innerHTML = "<p id='hwrtable'>Found " + numItems + " item" + (numItems != 1 ? "s" : "") + " you might be interested in:</p>"
     var tbl = "<table style='text-align: left;'><tr><th></th><th>Project</th><th>Title</th><th>Languages</th><th>Difficulty</th><th>Created</th></tr>"
     for (var i in json) {
         var item = json[i]
@@ -359,6 +359,7 @@ function displayItems(json, state) {
     }
     tbl += "</table>"
     obj.innerHTML += tbl
+    location.hash = '#hwrtable'
 }
 
 function fetchItems(languages, types, projects, sortBy) {

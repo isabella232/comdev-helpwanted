@@ -110,11 +110,7 @@
 	height: auto;
     padding: 5px;
 	margin: 0 auto;
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px;
-	-moz-box-shadow: 0 1px 2px #d1d1d1;
-	-webkit-box-shadow: 0 1px 2px #d1d1d1;
+	border-radius:30px;
 	box-shadow: 0 1px 2px #d1d1d1;
 }
 .hwitems table th {
@@ -268,11 +264,11 @@
 
 
 .wizitem {
-    border-radius: 10px;
+    border-radius: 30px;
     border: 2px solid #333;
 	text-align: center;
 	margin: 15px;
-	height: 180px !important;
+	height: 140px !important;
 	position: relative;
 	float: none !important;
 	display: inline-block;
