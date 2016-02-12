@@ -114,6 +114,7 @@ function displayItemsWidget(json, state) {
         numItems++
     }
     var obj = state.object ? state.object : widgetobj
+    var title = state.title ? state.title : widgettitle
     obj.setAttribute("class", "hwitems hwwidget")
     
     if (state && typeof(state) === "string") {
@@ -133,7 +134,7 @@ function displayItemsWidget(json, state) {
     }
     
     obj.innerHTML = ""
-    var tbl = "<table style='width: 100%; text-align: left;'><tr><td colspan='5' style='text-align: center;'><img src='https://helpwanted.apache.org/images/cube.png'/> Tasks " + widgettitle + " would like help with"+tags+":</td></tr>" +
+    var tbl = "<table style='width: 100%; text-align: left;'><tr><td colspan='5' style='text-align: center;'><img src='https://helpwanted.apache.org/images/cube.png'/> Tasks " + title + " would like help with"+tags+":</td></tr>" +
     "<tr style='cursor: pointer' title='Click on a column to sort'><th onclick='displayItemsWidget(null, \"title\");'>Title</th>" +
     "<th onclick='displayItemsWidget(null, \"languages\");'>Languages</th>" +
     "<th onclick='displayItemsWidget(null, \"difficulty\");'>Difficulty</th>" +
@@ -183,7 +184,7 @@ function displayItemsWidget(json, state) {
     obj.innerHTML += tbl
 }
 
-function fetchItemsWidget(languages, types, projects, sortBy, tags, object) {
+function fetchItemsWidget(languages, types, projects, sortBy, tags, object, title) {
     if (!languages) languages = []
     if (!types) types = []
     if (!projects) projects = []
@@ -192,6 +193,7 @@ function fetchItemsWidget(languages, types, projects, sortBy, tags, object) {
                  {
                     languages: languages,
                     types: types,
+                    title: title,
                     projects: projects,
                     sortBy: sortBy,
                     tags: tags.join(", "),
@@ -225,6 +227,6 @@ for (var i in divs) {
         css.rel = "stylesheet";
         css.href = "https://helpwanted.apache.org/css/hw2.css";
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(css)
-        fetchItemsWidget([],[],[dn], null, dtag, divs[i])
+        fetchItemsWidget([],[],[dn], null, dtag, divs[i], widgettitle)
     }
 }
