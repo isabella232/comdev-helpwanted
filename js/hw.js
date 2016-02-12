@@ -117,7 +117,7 @@ function wizard(step, arg) {
         wstate = {}
         obj.innerHTML = "<div style='text-align: center;'><big >What sort of work would you like to do?</big></div>"
         for (var i in types) {
-            obj.innerHTML += "<div onclick='wizard(2, \"" + types[i] + "\");' class=\"wizitem\" style=\"float: left; width: 235px; height: 250px;\"><img style='height: 96px; padding: 8px; vertical-align: middle;' src='images/" + types[i].replace(/\s+/g, "") + "_large.png'/><br/><b style='font-size:11pt;'>" + types_long[types[i]] + "</b></div>"
+            obj.innerHTML += "<div onclick='wizard(2, \"" + types[i] + "\");' class=\"wizitem\" style=\"float: left; width: 248px; height: 250px;\"><img style='height: 96px; padding: 8px; vertical-align: middle;' src='images/" + types[i].replace(/\s+/g, "") + "_large.png'/><br/><b style='font-size:11pt;'>" + types_long[types[i]] + "</b></div>"
         }
         obj.innerHTML += "<div style='text-align: center;'><a href='javascript:void(0);' onclick='fetchItems();'><big>...Just show me everything</big></a></div>"
     }
