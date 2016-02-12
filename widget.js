@@ -113,7 +113,7 @@ function displayItemsWidget(json, state) {
         }
         numItems++
     }
-    var obj = widgetobj
+    var obj = state.object ? state.object : widgetobj
     obj.setAttribute("class", "hwitems hwwidget")
     
     if (state && typeof(state) === "string") {
@@ -182,7 +182,7 @@ function displayItemsWidget(json, state) {
     obj.innerHTML += tbl
 }
 
-function fetchItemsWidget(languages, types, projects, sortBy, tags) {
+function fetchItemsWidget(languages, types, projects, sortBy, tags, object) {
     if (!languages) languages = []
     if (!types) types = []
     if (!projects) projects = []
@@ -193,7 +193,8 @@ function fetchItemsWidget(languages, types, projects, sortBy, tags) {
                     types: types,
                     projects: projects,
                     sortBy: sortBy,
-                    tags: tags.join(", ")
+                    tags: tags.join(", "),
+                    object: object
                     }, displayItemsWidget)
 }
 
@@ -223,7 +224,6 @@ for (var i in divs) {
         css.rel = "stylesheet";
         css.href = "https://helpwanted.apache.org/css/hw2.css";
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(css)
-        fetchItemsWidget([],[],[dn], null, dtag)
-        break
+        fetchItemsWidget([],[],[dn], null, dtag, divs[i])
     }
 }
