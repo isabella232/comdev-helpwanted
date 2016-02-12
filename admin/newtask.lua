@@ -36,7 +36,7 @@ function handle(r)
     local url = r:escape_html(post.url or "")
     local curl = r:escape_html(post.curl or "")
     local collab = (post.collaboration and post.collaboration == 'yes') and true or false
-    
+    local tag = r:escape_html(post.tag or "")
     
     if project and #project > 2 and typ and title and lingos and difficulty and desc then
         elastic.index(r, nil, 'item', JSON.encode{
@@ -48,6 +48,7 @@ function handle(r)
             description = desc,
             url = url,
             curl = curl,
+            tag = tag,
             collaboration = collab,
             created = os.time(),
             author = r.user or "unknown",
