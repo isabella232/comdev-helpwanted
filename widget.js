@@ -127,8 +127,13 @@ function displayItemsWidget(json, state) {
         
     }
     
+    var tags = ""
+    if (state.tags && state.tags.length > 0) {
+        tags = ", tagged " + state.tags
+    }
+    
     obj.innerHTML = ""
-    var tbl = "<table style='width: 100%; text-align: left;'><tr><td colspan='5' style='text-align: center;'><img src='https://helpwanted.apache.org/images/cube.png'/> Tasks " + widgettitle + " would like help with:</td></tr>" +
+    var tbl = "<table style='width: 100%; text-align: left;'><tr><td colspan='5' style='text-align: center;'><img src='https://helpwanted.apache.org/images/cube.png'/> Tasks " + widgettitle + " would like help with"+tags+":</td></tr>" +
     "<tr style='cursor: pointer' title='Click on a column to sort'><th onclick='displayItemsWidget(null, \"title\");'>Title</th>" +
     "<th onclick='displayItemsWidget(null, \"languages\");'>Languages</th>" +
     "<th onclick='displayItemsWidget(null, \"difficulty\");'>Difficulty</th>" +
@@ -177,16 +182,18 @@ function displayItemsWidget(json, state) {
     obj.innerHTML += tbl
 }
 
-function fetchItemsWidget(languages, types, projects, sortBy) {
+function fetchItemsWidget(languages, types, projects, sortBy, tags) {
     if (!languages) languages = []
     if (!types) types = []
     if (!projects) projects = []
-    getAsyncJSON("https://helpwanted.apache.org/listitems.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(","),
+    if (!tags) tags = []
+    getAsyncJSON("https://helpwanted.apache.org/listitems.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(",") +"&tags=" + tags.join(","),
                  {
                     languages: languages,
                     types: types,
                     projects: projects,
-                    sortBy: sortBy
+                    sortBy: sortBy,
+                    tags: tags.join(", ")
                     }, displayItemsWidget)
 }
 
@@ -201,15 +208,22 @@ for (var i in divs) {
     var dt = divs[i].getAttribute("type")
     var dn = divs[i].getAttribute("project")
     var dti = divs[i].getAttribute("description")
+    var dtag = divs[i].getAttribute("tags")
+    if (dtag) {
+        dtag = dtag.split(/,\s*/)
+    }
     if (dt && dt == "helpwanted" && dn) {
         widgetobj = divs[i]
         widgetproject = dn
         widgettitle = dti ? dti : dn
+        if (widgettitle == '*' || dn == '*') {
+            widgettitle = "the Apache Software Foundation"
+        }
         var css = document.createElement('link')
         css.rel = "stylesheet";
         css.href = "https://helpwanted.apache.org/css/hw2.css";
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(css)
-        fetchItemsWidget([],[],[dn])
+        fetchItemsWidget([],[],[dn], null, dtag)
         break
     }
 }

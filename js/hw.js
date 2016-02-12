@@ -109,6 +109,7 @@ var wstate = {}
 
 function wizard(step, arg) {
     var obj = document.getElementById('innerpicker')
+    document.getElementById('hwitems').innerHTML = ""
     if (!step) {
         step = 1
     }
@@ -116,9 +117,9 @@ function wizard(step, arg) {
         wstate = {}
         obj.innerHTML = "<h2 style='text-align: center;'>What sort of work would you like to do?</h2>"
         for (var i in types) {
-            obj.innerHTML += "<img style='vertical-align: middle;' src='images/icon_" + types[i].replace(/\s+/g, "") + ".png'/><big> <a href='javascript:void(0);' onclick='wizard(2, \"" + types[i] + "\");'>" + types_long[types[i]] + "</a></big><br/><br/>"
+            obj.innerHTML += "<div onclick='wizard(2, \"" + types[i] + "\");' class=\"wizitem\" style=\"float: left; width: 235px; height: 300px;\"><img style='height: 128px; padding: 8px; vertical-align: middle;' src='images/" + types[i].replace(/\s+/g, "") + "_large.png'/><br/><b style='font-size:11pt;'>" + types_long[types[i]] + "</b></div>"
         }
-        obj.innerHTML += "<br/><a href='javascript:void(0);' onclick='fetchItems();'><big>...Just show me everything</big></a>"
+        obj.innerHTML += "<div style='text-align: center;'><a href='javascript:void(0);' onclick='fetchItems();'><big>...Just show me everything</big></a></div>"
     }
     if (step == 2 && arg) {
         wstate = {
@@ -347,7 +348,7 @@ function displayItems(json, state) {
         if (state.admin) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
-        
+        item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
         tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left;' src='/images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
