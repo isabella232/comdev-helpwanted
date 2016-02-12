@@ -10,13 +10,21 @@
     <h2>Sample widget page</h2>
     This is a sample widget page. Just an ordinary HTML page with a widget attached by inserting the following code:
     <pre style='background: #FFE; border: 1px solid #666;'>
-&lt;div style="width: 700px;" type="helpwanted" project="<span id='pr'>httpd</span>" description="<span id='pru'>the Apache HTTP Server</span>">&lt;/div>
+&lt;div style="width: 700px;" type="helpwanted" project="<span id='pr'>httpd</span>" <span id='tags'></span> description="<span id='pru'>the Apache HTTP Server</span>">&lt;/div>
 &lt;script src="https://helpwanted.apache.org/widget.js" type="text/javascript">&lt;/script>
     </pre>
     <div id="foo" style="width: 700px;" type="helpwanted" project="httpd" description="the Apache HTTP Server"></div>
 <script type="text/javascript">
     var pr = document.location.search.substr(1)
-    if (pr && pr.length > 1) {
+    if (pr && pr.length > 0) {
+        var tags = ""
+        var m = pr.match(/(.+)\|([a-zA-Z0-9, ]+)/)
+        if (m) {
+            pr = m[1]
+            tags = m[2]
+            document.getElementById('tags').innerHTML = "tags=\"" + tags + "\""
+            document.getElementById('foo').setAttribute("tags", tags)
+        }
         pru = pr.replace(/^([a-z])/, function(a) { return a.toUpperCase()})
         document.getElementById('pr').innerHTML = pr
         document.getElementById('pru').innerHTML = "the Apache " + pru + " project"

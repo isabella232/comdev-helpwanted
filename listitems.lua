@@ -70,11 +70,21 @@ function handle(r)
         table.insert(projects, project)
     end
     
+    -- Tags
+    local tags = {}
+    for tag in (get.tags or ""):gmatch("([+#A-Za-z0-9+]+)") do
+        table.insert(tags, tag)
+    end
+    
     local pl = #projects > 0 and table.concat(projects, " OR ") or "*"
     local tl = #types > 0 and table.concat(types, " OR ") or "*"
     local ll = #lingos > 0 and table.concat(lingos, " OR ") or "*"
+    local ta = #tags > 0 and table.concat(tags, " OR ") or "*"
     
     local dsl = ("languages:(%s) AND type:(%s) AND project:(%s)"):format(ll, tl,pl)
+    if #ta > 1 then
+        dsl = ("%s AND tag:(%s)"):format(dsl, ta)
+    end
     
     local doc = elastic.find(dsl, 200, 'item', 'created')
     if doc and #doc > 0 then
