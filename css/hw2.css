@@ -101,19 +101,18 @@
 #innerpicker {
     text-align: left;
 	font-family:Arial, Helvetica, sans-serif;
-	color:#666;
-	font-size:12px;
+	color:#333;
+	font-size:12pt;
 	text-shadow: 1px 1px 0px #fff;
-	background:#fafbfc;
+	background: linear-gradient(135deg, rgba(222,231,237,1) 0%,rgba(171,190,204,1) 100%);
 	border:#ccc 1px solid;
-	width: 600px;
-	min-height: 300px;
+	width: 820px;
+	height: auto;
     padding: 5px;
 	margin: 0 auto;
 	-moz-border-radius:3px;
 	-webkit-border-radius:3px;
 	border-radius:3px;
-
 	-moz-box-shadow: 0 1px 2px #d1d1d1;
 	-webkit-box-shadow: 0 1px 2px #d1d1d1;
 	box-shadow: 0 1px 2px #d1d1d1;
@@ -254,8 +253,9 @@
   margin-right: 7px;
   height: 12px;
   font-size: 9px;
-  margin-bottom: 4px;
-  padding-top: 0px;
+  margin-bottom: 4px !important;
+  padding-top: 0px !important;
+  line-height: 12px !important;
   position: relative;
   top: 0px;
   left: 0px;
@@ -264,4 +264,21 @@
 .hwwidget img {
     vertical-align: middle;
     margin-right: 5px;
+}
+
+
+.wizitem {
+    border-radius: 10px;
+    border: 2px solid #333;
+	text-align: center;
+	margin: 15px;
+	height: 180px !important;
+	position: relative;
+	float: none !important;
+	display: inline-block;
+	background: linear-gradient(135deg, rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%);
+}
+
+.wizitem:hover {
+    cursor: pointer;
 }
