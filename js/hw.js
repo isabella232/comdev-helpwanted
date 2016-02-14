@@ -15,6 +15,7 @@
  limitations under the License.
 */
 
+var hw_oldstate
 
 var hw_weburl = new RegExp(
   "(" +
@@ -182,7 +183,7 @@ function wizard(step, arg) {
             obj.appendChild(document.createElement('br'))
         }
         obj.innerHTML += '<br/><div style="width: 100%; margin-top: 40px;"><input type="button" class="finishbutton" onclick="doForm()" value="Find me something to do!"/>' +
-        '<a onclick="wizard(1)" href="javascript:void(0);">Back to start</a></div>'
+        '<a onclick="wizard(1)" href="javascript:void(0);"><img src="/images/back.png" style="margin-left: 20px;"></a></div>'
     }
 }
 
@@ -315,6 +316,7 @@ function populateAdminForm() {
 }
 
 function displayItems(json, state) {
+    json = json ? json : cjson
     cjson = json
     var numItems = 0
     for (var i in json) {
@@ -324,6 +326,18 @@ function displayItems(json, state) {
         }
         numItems++
     }
+    
+    if (state && typeof(state) === "string") {
+        if (hw_oldstate == state) {
+            json.sort(function(a,b) { return a[state] < b[state] })
+            hw_oldstate = ""
+        } else {
+            json.sort(function(a,b) { return a[state] > b[state] })
+            hw_oldstate = state
+        }
+        
+    }
+    
     var obj = document.getElementById('hwitems')
     
     if (typeof(numItems) === 'undefined') {
@@ -332,7 +346,12 @@ function displayItems(json, state) {
     }
     
     obj.innerHTML = "<p id='hwrtable'>Found " + numItems + " item" + (numItems != 1 ? "s" : "") + " you might be interested in:</p>"
-    var tbl = "<table style='text-align: left;'><tr><th></th><th>Project</th><th>Title</th><th>Languages</th><th>Difficulty</th><th>Created</th></tr>"
+    var tbl = "<table style='text-align: left;'>" +
+    "<tr style='cursor: pointer' title='Click on a column to sort'><th>&nbsp;</th><th onclick='displayItems(null, \"project\");'>Project</th>" +
+    "<th onclick='displayItems(null, \"title\");'>Title</th>" +
+    "<th onclick='displayItems(null, \"languages\");'>Languages</th>" +
+    "<th onclick='displayItems(null, \"difficulty\");'>Difficulty</th>" +
+    "<th onclick='displayItems(null, \"created\");'>Created</th></tr>"
     for (var i in json) {
         var item = json[i]
         if (item.closed) {
