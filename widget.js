@@ -17,7 +17,7 @@
 var widgetobj = null
 var widgetproject = "???"
 var widgettitle = null
-var hw_json = null
+var hw_json = {}
 var maxitems = 8
 
 
@@ -101,9 +101,20 @@ function getAsyncJSON(theUrl, xstate, callback) {
 }
 
 var hw_oldstate = ""
-function displayItemsWidget(json, state) {
-    hw_json = json ? json : hw_json
-    json = hw_json
+function displayItemsWidget(json, state, sorting) {
+    var obj = state.object ? state.object : widgetobj
+    if (state && state.hwuid) {
+        var divs = document.getElementsByTagName('div')
+        for (var i in divs) {
+            if (divs[i].getAttribute && divs[i].getAttribute("hwuid") == state.hwuid) {
+                obj = divs[i]
+                break
+            }
+        }
+    }
+    var hwuid = obj.getAttribute("hwuid")
+    hw_json[hwuid] = json ? json : hw_json[hwuid]
+    json = hw_json[hwuid]
     var diff = ['Beginner', 'Journeyman', 'Intermediate', 'Advanced', 'Expert']
     var numItems = 0
     for (var i in json) {
@@ -113,32 +124,32 @@ function displayItemsWidget(json, state) {
         }
         numItems++
     }
-    var obj = state.object ? state.object : widgetobj
-    var title = state.title ? state.title : widgettitle
+    
+    var title = state.title ? state.title : obj.getAttribute("hwtitle")
     obj.setAttribute("class", "hwitems hwwidget")
     
-    if (state && typeof(state) === "string") {
-        if (hw_oldstate == state) {
-            json.sort(function(a,b) { return a[state] < b[state] })
+    if (sorting && typeof(sorting) === "string") {
+        if (hw_oldstate == sorting) {
+            json.sort(function(a,b) { return a[sorting] < b[sorting] })
             hw_oldstate = ""
         } else {
-            json.sort(function(a,b) { return a[state] > b[state] })
-            hw_oldstate = state
+            json.sort(function(a,b) { return a[sorting] > b[sorting] })
+            hw_oldstate = sorting
         }
         
     }
     
-    var tags = ""
+    var tags = obj.getAttribute("tags") ? ", tagged " + obj.getAttribute("tags") : ""
     if (state.tags && state.tags.length > 0) {
         tags = ", tagged " + state.tags
     }
     
     obj.innerHTML = ""
     var tbl = "<table style='width: 100%; text-align: left;'><tr><td colspan='5' style='text-align: center;'><img src='https://helpwanted.apache.org/images/cube.png'/> Tasks " + title + " would like help with"+tags+":</td></tr>" +
-    "<tr style='cursor: pointer' title='Click on a column to sort'><th onclick='displayItemsWidget(null, \"title\");'>Title</th>" +
-    "<th onclick='displayItemsWidget(null, \"languages\");'>Languages</th>" +
-    "<th onclick='displayItemsWidget(null, \"difficulty\");'>Difficulty</th>" +
-    "<th onclick='displayItemsWidget(null, \"created\");'>Created</th></tr>"
+    ("<tr style='cursor: pointer' title='Click on a column to sort'><th onclick='displayItemsWidget(null, {hwuid: \""+hwuid+"\"}, \"title\");'>Title</th>") +
+    ("<th onclick='displayItemsWidget(null, {hwuid: \""+hwuid+"\"}, \"languages\");'>Languages</th>") +
+    ("<th onclick='displayItemsWidget(null, {hwuid: \""+hwuid+"\"}, \"difficulty\");'>Difficulty</th>") +
+    ("<th onclick='displayItemsWidget(null, {hwuid: \""+hwuid+"\"}, \"created\");'>Created</th></tr>")
     
     if (typeof(numItems) === 'undefined' || numItems == 0) {
         obj.innerHTML = tbl + "<tr><td colspan='5'>Sorry, we couldn't find any tasks matching your criteria</td></tr>" +
@@ -154,7 +165,7 @@ function displayItemsWidget(json, state) {
             continue
         }
         if (parseInt(i) >= maxitems) {
-            tbl += "<tr><td colspan='5'><a href='javascript:void(0);' onclick='maxitems += 8; displayItemsWidget(null, {});'>Show more tasks</a></td></tr>"
+            tbl += "<tr><td colspan='5'><a href='javascript:void(0);' onclick='maxitems += 8; displayItemsWidget(null, {hwuid: \""+hwuid+"\"});'>Show more tasks</a></td></tr>"
             break
         }
         var rid = (Math.random()*99999).toString(16)
@@ -209,24 +220,29 @@ function sw(id) {
 
 var divs = document.getElementsByTagName('div')
 for (var i in divs) {
-    var dt = divs[i].getAttribute("type")
-    var dn = divs[i].getAttribute("project")
-    var dti = divs[i].getAttribute("description")
-    var dtag = divs[i].getAttribute("tags")
-    if (dtag) {
-        dtag = dtag.split(/,\s*/)
-    }
-    if (dt && dt == "helpwanted" && dn) {
-        widgetobj = divs[i]
-        widgetproject = dn
-        widgettitle = dti ? dti : dn
-        if (widgettitle == '*' || dn == '*') {
-            widgettitle = "the Apache Software Foundation"
+    if (divs[i].getAttribute) {
+        var dt = divs[i].getAttribute("type")
+        var dn = divs[i].getAttribute("project")
+        var dti = divs[i].getAttribute("description")
+        var dtag = divs[i].getAttribute("tags")
+        if (dtag) {
+            dtag = dtag.split(/,\s*/)
         }
-        var css = document.createElement('link')
-        css.rel = "stylesheet";
-        css.href = "https://helpwanted.apache.org/css/hw2.css";
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(css)
-        fetchItemsWidget([],[],[dn], null, dtag, divs[i], widgettitle)
+        if (dt && dt == "helpwanted" && dn) {
+            widgetobj = divs[i]
+            widgetproject = dn
+            widgettitle = dti ? dti : dn
+            if (widgettitle == '*' || dn == '*') {
+                widgettitle = "the Apache Software Foundation"
+            }
+            var css = document.createElement('link')
+            css.rel = "stylesheet";
+            css.href = "https://helpwanted.apache.org/css/hw2.css";
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(css)
+            divs[i].setAttribute("hwuid", (Math.random()*99999).toString(16))
+            divs[i].setAttribute("hwtitle", widgettitle)
+            fetchItemsWidget([],[],[dn], null, dtag, divs[i], widgettitle)
+        }
     }
+    
 }
