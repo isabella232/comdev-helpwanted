@@ -135,8 +135,9 @@ function wizard(step, arg) {
         wstate = {
             type: arg
         }
-        
-        obj.innerHTML = "<h2 style='text-align: center;'>Which languages are you proficient in?</h2>"
+        var tl = types_long[arg]
+        obj.innerHTML = "<h1 style='text-align: center;'>" + tl + ":</h1>"
+        obj.innerHTML += "<h2 style='text-align: center;'>Which languages are you proficient in?</h2>"
         obj.innerHTML += "<small>You don't need to pick a language, but it will help narrow down the tasks available for you.</small><br/>"
         
         if (arg == 'programming' || arg == 'documentation') {
@@ -427,9 +428,9 @@ function renderItem(json, state) {
         json.project = overrides[json.project]
     }
     json.description = json.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
-    obj.innerHTML = "<h2>Task #" + state + ":<br/><span style='color: #369;'>" + json.title + "</span></h2>"
+    obj.innerHTML = "<h2>Task #" + state.substring(0,8) + ": " + json.title + "</h2>"
     var mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at https://helpwanted.apache.org/task.html?" + rid + "\n\n")
-    obj.innerHTML += "<p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
+    obj.innerHTML += "<div id='pickerparent' style='padding:12px;'><p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
         "<b>Created by:</b> " + json.author + "@apache.org<br/>" +
         "<b>Task added: </b>" + cdate + "<br/>" +
         "<b>Difficulty: </b> <img style='width: 16px; height: 16px; vertical-align: middle;' src='/images/level_" + (parseInt(json.difficulty)+1) + ".png'/> " + diff[json.difficulty] + " - " + diff_explanation[parseInt(json.difficulty)] + "<br/>" +
@@ -443,7 +444,7 @@ function renderItem(json, state) {
         (json.curl && json.curl.length > 10 ? "<b>Contributor's guide for this project: </b><a href='" + json.curl + "'>" + json.curl + "</a><br/>" :"") +
         "If you want to help with this task, please get in touch with the project at: <a href=\""+mlink+"\">dev@" + json.project + ".apache.org</a>!" +
         "<br/>You should also check out the additional information URL (if such is provided above) for more information."
-        "<br/>&nbsp;<br/>&nbsp;<br/></p>"
+        "<br/>&nbsp;<br/>&nbsp;<br/></p></div>"
 }
 
 function displayItem(id) {
