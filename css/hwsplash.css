@@ -15,12 +15,12 @@ html {
     line-height: 48px;
     font-weight: bold;
     color: #333;
-    background: rgba(220,220,255,0.8);
+    background: rgba(220,220,255,0.85);
     border-radius: 12px;
 }
 
 .option_a:hover {
-    background: rgba(220,220,255,0.95);
+    background: rgba(220,220,255,1);
     cursor: pointer;
 }
 
@@ -32,12 +32,12 @@ html {
     line-height: 48px;
     font-weight: bold;
     color: #333;
-    background: rgba(220,255,220,0.8);
+    background: rgba(220,255,220,0.85);
     border-radius: 12px;
 }
 
 .option_b:hover {
-    background: rgba(220,255,220,0.95);
+    background: rgba(220,255,220,1);
     cursor: pointer;
 }
 
@@ -50,12 +50,12 @@ html {
     line-height: 48px;
     font-weight: bold;
     color: #333;
-    background: rgba(255,220,220,0.8);
+    background: rgba(255,220,220,0.85);
     border-radius: 12px;
 }
 
 .option_c:hover {
-    background: rgba(255,220,220,0.95);
+    background: rgba(255,220,220,1);
     cursor: pointer;
 }
 
