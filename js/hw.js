@@ -386,7 +386,10 @@ function displayItems(json, state) {
     }
     tbl += "</table>"
     obj.innerHTML += tbl
-    location.hash = '#hwrtable'
+    if (location.href.search('admin') == -1) {
+        location.hash = '#hwrtable'
+    }
+    
 }
 
 function fetchItems(languages, types, projects, sortBy) {
