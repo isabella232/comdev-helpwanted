@@ -79,6 +79,7 @@ var spoken_langs = ['english', 'french', 'german', 'spanish', 'russian', 'italia
 var website_langs = ['css','javascript','html']
 var projects = ['all projects']
 var cjson = {}
+var max_items = 10
 
 langs.sort()
 types.sort()
@@ -354,7 +355,7 @@ function displayItems(json, state) {
     }
     
     obj.innerHTML = "<p id='hwrtable'>Found " + numItems + " item" + (numItems != 1 ? "s" : "") + " you might be interested in:</p>"
-    var tbl = "<table style='text-align: left;'>" +
+    var tbl = "<table style='text-align: left; width: 100%;'>" +
     "<tr style='cursor: pointer' title='Click on a column to sort'><th>&nbsp;</th><th onclick='displayItems(null, \"project\");'>Project</th>" +
     "<th onclick='displayItems(null, \"title\");'>Title</th>" +
     "<th onclick='displayItems(null, \"languages\");'>Languages</th>" +
@@ -364,6 +365,10 @@ function displayItems(json, state) {
         var item = json[i]
         if (item.closed) {
             continue
+        }
+        if (parseInt(i) >= max_items) {
+            tbl += "<tr><td colspan='5'><a href='javascript:void(0);' onclick='max_items += 10; displayItems(null, {});'>Show more tasks</a></td></tr>"
+            break
         }
         var z = parseInt(i)+1
         var ptype = item.type.replace(/\s+/g, "")
@@ -376,10 +381,10 @@ function displayItems(json, state) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
         item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
-        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left;' src='/images/icon_" + ptype + ".png'/></td>" +
+        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='/images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
-        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
+        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
         
         tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id +"\";' value='I am interested in this'/></td></tr>"
         
