@@ -110,6 +110,14 @@ var wstate = {}
 
 function wizard(step, arg) {
     var obj = document.getElementById('innerpicker')
+    var pobj = document.getElementById('pickerparent')
+    var sobj = document.getElementById('splash')
+    if (step == 0) {
+        pobj.style.display = "none"
+        sobj.style.display = "block"
+    } else {
+        pobj.style.display = "block"
+    }
     document.getElementById('hwitems').innerHTML = ""
     if (!step) {
         step = 1
@@ -183,7 +191,7 @@ function wizard(step, arg) {
             obj.appendChild(document.createElement('br'))
         }
         obj.innerHTML += '<br/><div style="width: 100%; margin-top: 40px;"><input type="button" class="finishbutton" onclick="doForm()" value="Find me something to do!"/>' +
-        '<a onclick="wizard(1)" href="javascript:void(0);"><img src="/images/back.png" style="margin-left: 20px;"></a></div>'
+        '<a onclick="wizard(1)" href="javascript:void(0);"><img src="images/back.png" style="margin-left: 20px;"></a></div>'
     }
 }
 
@@ -368,7 +376,7 @@ function displayItems(json, state) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
         item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
-        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left;' src='/images/icon_" + ptype + ".png'/></td>" +
+        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left;' src='/images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
         "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
@@ -403,6 +411,13 @@ function renderItem(json, state) {
     var obj = document.getElementById('item')
     var cdate = new Date(json.created*1000).toDateString()
     var rid = json.request_id.substring(0,8)
+    var overrides = {
+        comdev: 'community',
+        whimsy: 'whimsical'
+    }
+    if (overrides[json.project]) {
+        json.project = overrides[json.project]
+    }
     json.description = json.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
     obj.innerHTML = "<h2>Task #" + state + ":<br/><span style='color: #369;'>" + json.title + "</span></h2>"
     var mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at https://helpwanted.apache.org/task.html?" + rid + "\n\n")
