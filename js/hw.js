@@ -262,15 +262,17 @@ function wizard(step, arg) {
         var b = brights[i]
         obj.style.background = "rgba(" + p.r + "," + p.g + "," + p.b + ", 0.95)"
         obj.style.color = "#333 !important"
+        obj.style.height = "340px"
         
-        obj.innerHTML += "<h2 style='text-align: center;'>Which languages are you proficient in?</h2>"
-        obj.innerHTML += "You don't need to pick a language, but it will help narrow down the tasks available for you.<br/>"
+        obj.innerHTML += "<h2 style='margin-bottom: 4px; line-height: 18pt; text-align: center;'>Which languages are you proficient in?</h2>"
+        obj.innerHTML += "<p>You don't need to pick a language, but it will help narrow down the tasks available for you.</p>"
         
         if (arg == 'programming' || arg == 'documentation') {
             for (var i in langs) {
                 var div = document.createElement('div')
                 div.style.float = "left"
                 div.style.width = "100px"
+                div.style.height = "28px"
                 var cb = document.createElement('input')
                 cb.setAttribute("type", "checkbox")
                 cb.setAttribute("id", "plang_" + langs[i])
@@ -288,6 +290,7 @@ function wizard(step, arg) {
                 var div = document.createElement('div')
                 div.style.float = "left"
                 div.style.width = "100px"
+                div.style.height = "28px"
                 var cb = document.createElement('input')
                 cb.setAttribute("type", "checkbox")
                 cb.setAttribute("id", "plang_" + website_langs[i])
@@ -305,6 +308,7 @@ function wizard(step, arg) {
                 var div = document.createElement('div')
                 div.style.float = "left"
                 div.style.width = "100px"
+                div.style.height = "28px"
                 var cb = document.createElement('input')
                 cb.setAttribute("type", "checkbox")
                 cb.setAttribute("id", "plang_" + spoken_langs[i])
@@ -318,7 +322,7 @@ function wizard(step, arg) {
             }
             obj.appendChild(document.createElement('br'))
         }
-        obj.innerHTML += '<br/><div style="width: 100%; margin-top: 40px;"><input type="button" class="finishbutton" onclick="doForm(this.parentNode.parentNode)" value="Find me something to do!"/>' +
+        obj.innerHTML += '<div style="height: 60px; width: 100%; margin-top: 30px; float: left;"><input type="button" class="finishbutton" onclick="doForm(this.parentNode.parentNode)" value="Find me something to do!"/>' +
         '<span style="font-size: 14pt; color: #333;">◀ <a style="color: #333;" onclick="wizard(1)" href="javascript:void(0);">Back to start</a></span></div>'
     }
 }
