@@ -111,7 +111,8 @@ var splashOptions = {
 
 
 var diff = ['Beginner', 'Journeyman', 'Intermediate', 'Advanced', 'Expert']
-var langs = ['c','xml','c++','c-sharp','java','javascript','css','html','perl','ruby','lua','python','go','rust', 'erlang', 'swift', 'groovy', 'haskell']
+var langs = ['c', 'xml', 'c++', 'c-sharp', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'bash', 'tcl', 'jsp', 'svg']
+
 var types = ['programming', 'web design', 'marketing', 'documentation', 'community', 'translation']
 var types_long = {
     programming: "Programming and Development",
