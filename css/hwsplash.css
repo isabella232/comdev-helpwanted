@@ -3,81 +3,77 @@ html {
     min-height: 100%;
     color: #FFF;
 }
-
+body p {
+    margin: 2px;
+    padding: 0px;
+}
 body a {
     color: #FFF;
 }
 
 .option {
     width: 640px !important;
-    margin: 12px auto;
-}
-
-.option_a {
-    width: 440px;
-    height: 48px;
+    margin: 6px auto;
+    min-height: 48px;
     border: 1px solid #EEE;
     line-height: 48px;
     font-weight: bold;
-    color: #333;
-    background: rgba(255,255,210,1);
+    color: #222;
     border-radius: 12px;
+    opacity: 1;
+    animation: fadein 0.65s;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 12pt;
 }
 
-.option_a:hover {
-    background: rgba(255,255,180,1);
-    cursor: pointer;
-}
-
-
-.option_b {
-    width: 440px;
-    height: 48px;
+.optiontwo {
+    width: 640px !important;
+    margin: 6px auto;
+    padding: 6px;
+    min-height: 48px;
     border: 1px solid #EEE;
     line-height: 48px;
-    font-weight: bold;
-    color: #333;
-    background: rgba(220,255,220,0.85);
+    font-weight: normal;
+    color: #222;
     border-radius: 12px;
+    opacity: 1;
+    animation: fadein 0.65s;
+    text-align: left;
+    font-family: sans-serif;
 }
 
-.option_b:hover {
-    background: rgba(220,255,220,1);
+@keyframes fadein {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1); opacity: 1;}
+}
+
+
+.option:hover {
+    opacity: 1;
+    transform: scale(1.05);
     cursor: pointer;
 }
 
-
-
-.option_c {
-    width: 440px;
-    height: 48px;
-    border: 1px solid #EEE;
-    line-height: 48px;
-    font-weight: bold;
-    color: #333;
-    background: rgba(255,220,220,0.85);
-    border-radius: 12px;
+.optiontwo label {
+    font-size: 10pt;
+    
 }
-
-.option_c:hover {
-    background: rgba(255,220,220,1);
-    cursor: pointer;
-}
-
 .option div:before {
-    content: '▶  '
+    content: '▶  ';
+    color: #FFF;
 }
+
 .option:hover div {
     opacity: 1;
 }
-.option_a div {
+.option div {
     margin-top: 6px;
     margin-left: 6px;
     margin-right: 6px;
     line-height: 24px;
     color: #FFF;
-    opacity: 0.9;
-    background: #F9DB16;
+    opacity: 0.8;
     width: 32px;
     height: 32px;
     border-radius: 8px;
@@ -89,44 +85,6 @@ body a {
     float: left;
 }
 
-.option_b div {
-    margin-top: 6px;
-    margin-left: 6px;
-    margin-right: 6px;
-    line-height: 24px;
-    color: #FFF;
-    opacity: 0.9;
-    background: #5BB85D;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    padding-left: 6px;
-    padding-right: -3px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    font-size: 24px;
-    float: left;
-}
-
-
-.option_c div {
-    margin-top: 6px;
-    margin-left: 6px;
-    margin-right: 6px;
-    line-height: 24px;
-    color: #FFF;
-    opacity: 0.9;
-    background: #D9544F;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    padding-left: 6px;
-    padding-right: -3px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    font-size: 24px;
-    float: left;
-}
 
 pre {
     background: #EFE !important;

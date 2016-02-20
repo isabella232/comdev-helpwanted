@@ -55,6 +55,61 @@ var hw_weburl = new RegExp(
   , "mig"
 );
 
+
+function hw_hsl2rgb (h,s,l)
+{
+    var min, sv, switcher, fract, vsf;
+    h = h % 1;
+    if (s > 1) s = 1;
+    if (l > 1) l = 1;
+    var v = (l <= 0.5) ? (l * (1 + s)) : (l + s - l * s);
+    if (v === 0)
+        return { r: 0, g: 0, b: 0 };
+
+    min = 2 * l - v;
+    sv = (v - min) / v;
+    var sh = (6 * h) % 6;
+    switcher = Math.floor(sh);
+    fract = sh - switcher;
+    vsf = v * sv * fract;
+
+    switch (switcher)
+    {
+        case 0: return { r: v, g: min + vsf, b: min };
+        case 1: return { r: v - vsf, g: v, b: min };
+        case 2: return { r: min, g: v, b: min + vsf };
+        case 3: return { r: min, g: v - vsf, b: v };
+        case 4: return { r: min + vsf, g: min, b: v };
+        case 5: return { r: v, g: min, b: v - vsf };
+    }
+    return {r:0, g:0, b: 0};
+}
+
+function genColors(numColors, saturation, lightness) {
+    var cls = []
+    var baseHue = 1.32;
+    for (var i = 0; i < numColors; i++) {
+        
+        var c = hw_hsl2rgb(baseHue, saturation, lightness)
+        cls.push({r:parseInt(c.r*255), g:parseInt(c.g*255), b:parseInt(c.b*255)})
+        baseHue -= 0.175
+        if (baseHue < 0) {
+            baseHue += 1
+        }
+    }
+    return cls
+}
+
+var pastels = genColors(16, 0.9, 0.85)
+var brights = genColors(16, 0.8, 0.675)
+
+var splashOptions = {
+    'I want to help out!': 'this.parentNode.style.display="none"; wizard(1);',
+    'I am an Apache committer and wish to add or edit tasks.': 'location.href="/admin/";',
+    'I want to help spread the word about <q>Help Wanted</q>!': 'location.href="wtest.html";',
+}
+
+
 var diff = ['Beginner', 'Journeyman', 'Intermediate', 'Advanced', 'Expert']
 var langs = ['c','xml','c++','c-sharp','java','javascript','css','html','perl','ruby','lua','python','go','rust', 'erlang', 'swift', 'groovy', 'haskell']
 var types = ['programming', 'web design', 'marketing', 'documentation', 'community', 'translation']
@@ -100,11 +155,34 @@ function getAsyncJSON(theUrl, xstate, callback) {
 				if (xmlHttp.status == 404) {
 					callback({}, xstate);
 				} else {
-					window.setTimeout(callback, 0.05, JSON.parse(xmlHttp.responseText), xstate);
+					callback(JSON.parse(xmlHttp.responseText), xstate);
 				}
 			}
 		}
 	}
+}
+
+function showSplash(args) {
+    var i = 0;
+    var obj = document.getElementById('splash')
+    document.getElementById('pickerparent').style.display = "none"
+    document.getElementById('wizard_step1').style.display = "none"
+    obj.style.display = "block"
+    obj.innerHTML = "<span style='font-size: 20pt; font-family: sans-serif; color: #FFF;'>What would you like to do today?</span>"
+    for (var title in splashOptions) {
+        var p = pastels[i]
+        var b = brights[i]
+        var d = document.createElement('div')
+        d.setAttribute("class", "option")
+        d.setAttribute("onclick", splashOptions[title])
+        d.style.background = "rgba(" + p.r + "," + p.g + "," + p.b + ", 0.85)"
+        var btn = document.createElement('div')
+        btn.style.background = "rgba(" + b.r + "," + b.g + "," + b.b + ", 1)"
+        d.appendChild(btn)
+        d.innerHTML += title; //appendChild(document.createTextNode(title))
+        obj.appendChild(d)
+        i++
+    }
 }
 
 var wstate = {}
@@ -113,10 +191,13 @@ function wizard(step, arg) {
     var obj = document.getElementById('innerpicker')
     var pobj = document.getElementById('pickerparent')
     var sobj = document.getElementById('splash')
+    var wobj = document.getElementById('wizard_step1')
     if (step == 0) {
         pobj.style.display = "none"
+        wobj.style.display = "none"
         sobj.style.display = "block"
-    } else {
+        
+    } else if (step > 1) {
         pobj.style.display = "block"
     }
     document.getElementById('hwitems').innerHTML = ""
@@ -125,20 +206,64 @@ function wizard(step, arg) {
     }
     if (step == 1) {
         wstate = {}
-        obj.innerHTML = "<div style='text-align: center;'><big >What sort of work would you like to do?</big></div>"
+        wobj.style.display = "block"
+        var wcobj = document.getElementById('wizard_step1_contents')
+        wcobj.innerHTML = "<span style='font-size: 20pt; font-family: sans-serif; color: #FFF;'>What kind of tasks would you like to help with?</span>"
         for (var i in types) {
-            obj.innerHTML += "<div onclick='wizard(2, \"" + types[i] + "\");' class=\"wizitem\" style=\"float: left; width: 248px; height: 250px;\"><img style='height: 96px; padding: 8px; vertical-align: middle;' src='images/" + types[i].replace(/\s+/g, "") + "_large.png'/><br/><b style='font-size:11pt;'>" + types_long[types[i]] + "</b></div>"
+            var p = pastels[i]
+            var b = brights[i]
+            var d = document.createElement('div')
+            d.setAttribute("class", "option")
+            d.setAttribute("onclick", "wizard(2, '" + types[i] + "');")
+            d.style.background = "rgba(" + p.r + "," + p.g + "," + p.b + ", 0.85)"
+            var btn = document.createElement('img')
+            btn.setAttribute("src", "images/" + types[i].replace(/\s+/g, "") + "_large.png")
+            btn.setAttribute("style", "width: 36px; heigh: 36px; vertical-align: middle; padding: 4px; padding-right: 12px;")
+            d.appendChild(btn)
+            d.appendChild(document.createTextNode(types_long[types[i]]))
+            wcobj.appendChild(d)
         }
-        obj.innerHTML += "<div style='text-align: center;'><a href='javascript:void(0);' onclick='fetchItems();'><big>...Just show me everything</big></a></div>"
+        
+        // show me everything
+        var i = types.length
+        var p = pastels[i]
+            var b = brights[i]
+            var d = document.createElement('div')
+            d.setAttribute("class", "option")
+            d.setAttribute("onclick", "fetchItems();")
+            d.style.background = "rgba(" + p.r + "," + p.g + "," + p.b + ", 0.85)"
+            var btn = document.createElement('img')
+            btn.setAttribute("src", "images/everything_large.png")
+            btn.setAttribute("style", "width: 36px; heigh: 36px; vertical-align: middle; padding: 4px; padding-right: 12px;")
+            d.appendChild(btn)
+            d.appendChild(document.createTextNode("Just show me everything..."))
+            wcobj.appendChild(d)
+        
     }
     if (step == 2 && arg) {
         wstate = {
             type: arg
         }
         var tl = types_long[arg]
-        obj.innerHTML = "<h1 style='text-align: center;'>" + tl + ":</h1>"
+        var wcobj = document.getElementById('wizard_step1_contents')
+        wcobj.innerHTML = "<span style='font-size: 20pt; font-family: sans-serif; color: #FFF;'>" + tl + "</span>"
+        var obj = document.createElement('div')
+        obj.setAttribute("class", "optiontwo")
+        wcobj.appendChild(obj)
+        var i = 0;
+        for (var k in types) {
+            if (types[k] == arg) {
+                i = k;
+                break
+            }
+        }
+        var p = pastels[i]
+        var b = brights[i]
+        obj.style.background = "rgba(" + p.r + "," + p.g + "," + p.b + ", 0.95)"
+        obj.style.color = "#333 !important"
+        
         obj.innerHTML += "<h2 style='text-align: center;'>Which languages are you proficient in?</h2>"
-        obj.innerHTML += "<small>You don't need to pick a language, but it will help narrow down the tasks available for you.</small><br/>"
+        obj.innerHTML += "You don't need to pick a language, but it will help narrow down the tasks available for you.<br/>"
         
         if (arg == 'programming' || arg == 'documentation') {
             for (var i in langs) {
@@ -192,8 +317,8 @@ function wizard(step, arg) {
             }
             obj.appendChild(document.createElement('br'))
         }
-        obj.innerHTML += '<br/><div style="width: 100%; margin-top: 40px;"><input type="button" class="finishbutton" onclick="doForm()" value="Find me something to do!"/>' +
-        '<a onclick="wizard(1)" href="javascript:void(0);"><img src="images/back.png" style="margin-left: 20px;"></a></div>'
+        obj.innerHTML += '<br/><div style="width: 100%; margin-top: 40px;"><input type="button" class="finishbutton" onclick="doForm(this.parentNode.parentNode)" value="Find me something to do!"/>' +
+        '<span style="font-size: 14pt; color: #333;">◀ <a style="color: #333;" onclick="wizard(1)" href="javascript:void(0);">Back to start</a></span></div>'
     }
 }
 
@@ -243,7 +368,7 @@ function populateForm() {
     f.appendChild(document.createTextNode('All projects'))
 }
 
-function doForm() {
+function doForm(par) {
     var l = []
     var t = []
     var p = []
@@ -263,7 +388,7 @@ function doForm() {
     if (wstate.projects) {
         p = wstate.projects
     }
-    fetchItems(l, t, p)
+    fetchItems(l, t, p, null, par)
 }
 
 function sw(id) {
@@ -336,7 +461,12 @@ function displayItems(json, state) {
         }
         numItems++
     }
-    
+    if (numItems == 0 && state && state.parentObject) {
+        state.parentObject.style.display = 'none'
+        window.setTimeout(function() { state.parentObject.style.display = 'block' }, 50)
+        state.parentObject.innerHTML ="<div style='line-height: 12pt; text-align: center;'><h2>Dang it!</h2><p>Sorry, we couldn't find any open tasks matching your criteria.<br/>You could try expanding your search or picking a different category.<br/><br/></p><p><span style='font-size: 14pt; color: #333;'>◀ <a style='color: #333;' onclick='wizard(1)' href='javascript:void(0);'>Back to start</a></span></p></div>"
+        return
+    }
     if (state && typeof(state) === "string") {
         if (hw_oldstate == state) {
             json.sort(function(a,b) { return a[state] < b[state] })
@@ -356,6 +486,8 @@ function displayItems(json, state) {
     }
     
     obj.innerHTML = "<p id='hwrtable'>Found " + numItems + " item" + (numItems != 1 ? "s" : "") + " you might be interested in:</p>"
+    var colors = genColors(numItems+2)
+    
     var tbl = "<table style='text-align: left; width: 100%;'>" +
     "<tr style='cursor: pointer' title='Click on a column to sort'><th>&nbsp;</th><th onclick='displayItems(null, \"project\");'>Project</th>" +
     "<th onclick='displayItems(null, \"title\");'>Title</th>" +
@@ -382,10 +514,10 @@ function displayItems(json, state) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
         item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
-        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='/images/icon_" + ptype + ".png'/></td>" +
+        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
-        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
+        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
         
         tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id +"\";' value='I am interested in this'/></td></tr>"
         
@@ -398,22 +530,23 @@ function displayItems(json, state) {
     
 }
 
-function fetchItems(languages, types, projects, sortBy) {
+function fetchItems(languages, types, projects, sortBy, par) {
     if (!languages) languages = []
     if (!types) types = []
     if (!projects) projects = []
-    getAsyncJSON("/listitems.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(","),
+    getAsyncJSON("https://helpwanted.apache.org/listitems.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(","),
                  {
                     languages: languages,
                     types: types,
                     projects: projects,
-                    sortBy: sortBy
+                    sortBy: sortBy,
+                    parentObject: par
                     }, displayItems)
 }
 
 
 function fetchItemsAdmin() {
-    getAsyncJSON("/listitems.lua", {admin: true}, displayItems)
+    getAsyncJSON("https://helpwanted.apache.org/listitems.lua", {admin: true}, displayItems)
 }
 
 function renderItem(json, state) {
@@ -448,5 +581,5 @@ function renderItem(json, state) {
 }
 
 function displayItem(id) {
-    getAsyncJSON("/listitems.lua?id=" + id, id, renderItem)
+    getAsyncJSON("https://helpwanted.apache.org/listitems.lua?id=" + id, id, renderItem)
 }
