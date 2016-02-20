@@ -550,6 +550,7 @@ function fetchItemsAdmin() {
 }
 
 function renderItem(json, state) {
+    var p = pastels[parseInt(Math.random()*pastels.length)]
     var obj = document.getElementById('item')
     var cdate = new Date(json.created*1000).toDateString()
     var rid = json.request_id.substring(0,8)
@@ -563,7 +564,8 @@ function renderItem(json, state) {
     json.description = json.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
     obj.innerHTML = "<h2>Task #" + state.substring(0,8) + ": " + json.title + "</h2>"
     var mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at https://helpwanted.apache.org/task.html?" + rid + "\n\n")
-    obj.innerHTML += "<div id='pickerparent' style='padding:12px;'><p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
+    var rgba = "rgba(" + p.r + "," + p.g + "," + p.b + ", 1)"
+    obj.innerHTML += "<div id='pickerparent' style='background: " + rgba + "; padding:12px;'><p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
         "<b>Created by:</b> " + json.author + "@apache.org<br/>" +
         "<b>Task added: </b>" + cdate + "<br/>" +
         "<b>Difficulty: </b> <img style='width: 16px; height: 16px; vertical-align: middle;' src='/images/level_" + (parseInt(json.difficulty)+1) + ".png'/> " + diff[json.difficulty] + " - " + diff_explanation[parseInt(json.difficulty)] + "<br/>" +

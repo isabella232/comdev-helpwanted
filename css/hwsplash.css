@@ -11,6 +11,11 @@ body a {
     color: #FFF;
 }
 
+div a {
+    color: #111;
+    font-weight: 600;
+}
+
 .option {
     width: 640px !important;
     margin: 6px auto;
