@@ -493,12 +493,17 @@ function displayItems(json, state) {
     obj.innerHTML = "<p id='hwrtable'>Found " + numItems + " item" + (numItems != 1 ? "s" : "") + " you might be interested in:</p>"
     var colors = genColors(numItems+2)
     
+    var admintab = ""
+    if (state.admin) {
+        admintab = "<th>Actions</th>"
+    }
     var tbl = "<table style='text-align: left; width: 100%;'>" +
     "<tr style='cursor: pointer' title='Click on a column to sort'><th>&nbsp;</th><th onclick='displayItems(null, \"project\");'>Project</th>" +
     "<th onclick='displayItems(null, \"title\");'>Title</th>" +
     "<th onclick='displayItems(null, \"languages\");'>Languages</th>" +
     "<th onclick='displayItems(null, \"difficulty\");'>Difficulty</th>" +
-    "<th onclick='displayItems(null, \"created\");'>Created</th></tr>"
+    "<th onclick='displayItems(null, \"created\");'>Created</th>" +
+    admintab + "</tr>"
     for (var i in json) {
         var item = json[i]
         if (item.closed) {
@@ -516,13 +521,13 @@ function displayItems(json, state) {
         // admin stuff
         var add = ""
         if (state.admin) {
-            add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
+            add = " <td><a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a></td>"
         }
         item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
         tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
-        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
+        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + "</td><td>" + cdate + "</td>" + add + "</tr>"
         
         tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id +"\";' value='I am interested in this'/></td></tr>"
         
