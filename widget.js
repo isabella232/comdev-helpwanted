@@ -113,7 +113,7 @@ function displayItemsWidget(json, state, sorting) {
         }
     }
     var hwuid = obj.getAttribute("hwuid")
-    hw_json[hwuid] = json ? json : hw_json[hwuid]
+    hw_json[hwuid] = json ? json.tasks : hw_json[hwuid]
     json = hw_json[hwuid]
     var diff = ['Beginner', 'Journeyman', 'Intermediate', 'Advanced', 'Expert']
     var numItems = 0
@@ -200,7 +200,7 @@ function fetchItemsWidget(languages, types, projects, sortBy, tags, object, titl
     if (!types) types = []
     if (!projects) projects = []
     if (!tags) tags = []
-    getAsyncJSON("https://helpwanted.apache.org/listitems.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(",") +"&tags=" + tags.join(","),
+    getAsyncJSON("https://helpwanted.apache.org/tasks.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(",") +"&tags=" + tags.join(","),
                  {
                     languages: languages,
                     types: types,

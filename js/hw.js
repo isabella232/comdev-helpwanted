@@ -456,7 +456,7 @@ function populateAdminForm() {
 }
 
 function displayItems(json, state) {
-    json = json ? json : cjson
+    json = json ? json.tasks : cjson
     cjson = json
     var numItems = 0
     for (var i in json) {
@@ -519,10 +519,10 @@ function displayItems(json, state) {
             add = " &nbsp; <a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a>"
         }
         item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, function(a) { return "<a href='"+a+"'>"+a+"</a>"})
-        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='images/icon_" + ptype + ".png'/></td>" +
+        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
-        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
+        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + add + "</td><td>" + cdate + "</td></tr>"
         
         tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id +"\";' value='I am interested in this'/></td></tr>"
         
@@ -539,7 +539,7 @@ function fetchItems(languages, types, projects, sortBy, par) {
     if (!languages) languages = []
     if (!types) types = []
     if (!projects) projects = []
-    getAsyncJSON("https://helpwanted.apache.org/listitems.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(","),
+    getAsyncJSON("https://helpwanted.apache.org/tasks.lua?lang=" + languages.join(",") + "&type=" + types.join(",") +"&project=" + projects.join(","),
                  {
                     languages: languages,
                     types: types,
@@ -551,7 +551,7 @@ function fetchItems(languages, types, projects, sortBy, par) {
 
 
 function fetchItemsAdmin() {
-    getAsyncJSON("https://helpwanted.apache.org/listitems.lua", {admin: true}, displayItems)
+    getAsyncJSON("https://helpwanted.apache.org/tasks.lua", {admin: true}, displayItems)
 }
 
 function renderItem(json, state) {
@@ -588,5 +588,5 @@ function renderItem(json, state) {
 }
 
 function displayItem(id) {
-    getAsyncJSON("https://helpwanted.apache.org/listitems.lua?id=" + id, id, renderItem)
+    getAsyncJSON("https://helpwanted.apache.org/tasks.lua?id=" + id, id, renderItem)
 }

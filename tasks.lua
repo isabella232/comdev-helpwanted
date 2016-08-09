@@ -18,6 +18,7 @@
 
 local JSON = require 'cjson'
 local elastic = require 'lib/elastic'
+local cache = {}
 
 function handle(r)
     r.content_type = "application/json"
@@ -76,30 +77,76 @@ function handle(r)
         table.insert(tags, tag)
     end
     
-    local pl = #projects > 0 and table.concat(projects, " OR ") or "*"
-    local tl = #types > 0 and table.concat(types, " OR ") or "*"
-    local ll = #lingos > 0 and table.concat(lingos, " OR ") or "*"
-    local ta = #tags > 0 and table.concat(tags, " OR ") or "*"
+    local wcards = nil
+    if #projects == 0 then
+        wcards = {project = "*"}
+    end
+    local mpl = #projects > 0 and { match = {project = { query = table.concat(projects, " ")}}} or nil
+    local mtl = #types > 0 and { match = {['type'] = { query = table.concat(types, " ")}}} or nil
+    local mll = #lingos > 0 and { match = { languages = {query = table.concat(lingos, " ")}}} or nil
+    local mta = #tags > 0 and { match = { tags = {query = table.concat(tags, " ")}}} or nil
     
-    local dsl = ("languages:(%s) AND type:(%s) AND project:(%s)"):format(ll, tl,pl)
-    if #ta > 1 then
-        dsl = ("%s AND tag:(%s)"):format(dsl, ta)
+    local matches = {}
+    if mpl then table.insert(matches,mpl) end
+    if mtl then table.insert(matches,mtl) end
+    if mll then table.insert(matches,mll) end
+    if mta then table.insert(matches,mta) end
+    
+    if not (mpl or mtl or mll or mta) then
+        matches = nil
     end
     
-    local doc = elastic.find(dsl, 250, 'item', 'created')
-    if doc and #doc > 0 then
-        if not get.all then
-            local vdoc = {}
-            for k, v in pairs(doc) do
-                if not v.closed then
-                    table.insert(vdoc, v)
-                end
-            end
-            doc = vdoc
+    
+    -- First, check cache for recent dsl-alike
+    local ts = os.time()
+    local dsl = r:sha1(JSON.encode({matches, wcards}))
+    local doc = {}
+    local fc = false
+    for k, v in pairs(cache) do
+        if v.dsl == dsl and v.timestamp > (ts - 120) then
+            fc = true
+            doc = v.cache
+            break
         end
-        r:puts(JSON.encode(doc))
-    else
-        r:puts[[{}]]
     end
+    if not fc then
+        doc = elastic.raw {
+            query = {
+                bool = {
+                    must = matches,
+                }
+            },
+            
+            sort = {
+                {
+                    created = {
+                        order = "desc"
+                    }
+                }  
+            },
+            size = 250
+        }
+    end
+
+    local vdoc = {}
+    if doc and doc.hits and doc.hits.hits and #doc.hits.hits > 0 then
+        for k, v in pairs(doc.hits.hits) do
+            if not v._source.closed or get.all then
+                v._source.request_id = v._id
+                table.insert(vdoc, v._source)
+            end
+        end
+        if not fc then
+            table.insert(cache, {
+                dsl = dsl,
+                timestamp = ts,
+                cache = doc
+            })
+            if #cache > 50 then
+                cache[1] = nil
+            end
+        end
+    end
+    r:puts(JSON.encode({cached = fc, num = #vdoc, took = ((r:clock()-now)/1000), tasks = vdoc, dsl = dsl}))
     return apache2.OK
 end
