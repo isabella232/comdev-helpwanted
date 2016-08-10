@@ -280,7 +280,7 @@ reallyPopulate = (json, state) ->
     optg = mk('optgroup', { label: (if state then 'Non-TLPs:' else 'Top Level Projects:')})
     app(obj, optg)
     
-    for group in (json.committees || json.groups)
+    for group, data of (json.committees || json.groups)
         pro.push(group)
         app(obj, mk('option', { value: group}, group ))
     if state

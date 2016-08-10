@@ -436,7 +436,7 @@ sw = function(id) {
 };
 
 reallyPopulate = function(json, state) {
-  var group, j, lang, len, len1, len2, m, n, obj, opt, optg, pro, ref;
+  var data, group, j, lang, len, len1, m, obj, opt, optg, pro, ref;
   pro = [];
   obj = get('project');
   optg = mk('optgroup', {
@@ -444,8 +444,8 @@ reallyPopulate = function(json, state) {
   });
   app(obj, optg);
   ref = json.committees || json.groups;
-  for (j = 0, len = ref.length; j < len; j++) {
-    group = ref[j];
+  for (group in ref) {
+    data = ref[group];
     pro.push(group);
     app(obj, mk('option', {
       value: group
@@ -459,8 +459,8 @@ reallyPopulate = function(json, state) {
     label: "Programming languages:"
   });
   app(obj, optg);
-  for (m = 0, len1 = langs.length; m < len1; m++) {
-    lang = langs[m];
+  for (j = 0, len = langs.length; j < len; j++) {
+    lang = langs[j];
     app(obj, mk('option', {
       text: lang,
       value: lang
@@ -470,8 +470,8 @@ reallyPopulate = function(json, state) {
     label: "Spoken languages:"
   });
   app(obj, optg);
-  for (n = 0, len2 = spoken_langs.length; n < len2; n++) {
-    lang = spoken_langs[n];
+  for (m = 0, len1 = spoken_langs.length; m < len1; m++) {
+    lang = spoken_langs[m];
     app(obj, mk('option', {
       value: lang
     }, lang.replace(/^([a-z])/, (function(_this) {
@@ -669,10 +669,6 @@ fetch = function(url, xstate, callback, snap) {
       if (callback) {
         try {
           response = JSON.parse(xmlHttp.responseText);
-          if (response && response.loginRequired) {
-            location.href = "/login.html";
-            return;
-          }
           return callback(response, xstate);
         } catch (_error) {
           e = _error;
