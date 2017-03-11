@@ -1,0 +1,53 @@
+ <!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf8">
+<link rel="stylesheet" href="css/hw.css">
+<link rel="stylesheet" href="css/hw2.css">
+<link rel="stylesheet" href="css/hwsplash.css">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="description" content="A task directory for Apache projects">
+<title>Help Wanted!</title>
+<meta name="description" content="Technical details about the Apache Helpwanted website">
+<style type="text/css">
+  body p {
+      margin: 5px;
+      padding: 5px;
+  }
+</style>
+</head>
+<body>
+    
+<div style="text-align: center;">
+    <p style="text-align: center;">
+    <a href='?'><img src='images/logo.png' width="580" height="85" title="Help Wanted!" style='padding-top: 5px;'/></a>
+    </p>
+</div>
+
+<div id="content" style="font-family: sans-serif;">
+  <p>
+    This website is maintained by the 
+    <span itemscope itemprop="author" itemtype="http://schema.org/Organization">
+      <span itemprop="name"><a itemprop="url" href="http://community.apache.org/">Apache Community Development PMC</a></span> who works on the 
+      <span itemprop="email">dev@community.apache.org</span>
+      <span itemscope itemtype="https://schema.org/ContactPage"><a itemprop="url" href="https://community.apache.org/lists.html">archived mailing list</a></span>.
+    </span>
+  </p>
+  <p>
+    The text for this website is static HTML, but most of the work happens in lua scripts on the webserver which load the helpwanted tasks.
+    <br/>
+    The underlying sources are stored in a Subversion repository at: <pre itemscope itemtype="https://schema.org/SoftwareSourceCode" style="border:1px solid #999; padding: 12px; margin: 1em 7px 1em 7px;">svn co <a itemprop="codeRepository" href="https://svn.apache.org/repos/asf/comdev/helpwanted.apache.org/site/">https://svn.apache.org/repos/asf/comdev/helpwanted.apache.org/site/</a></pre>
+    <br/>
+    Changes checked into the HTML are reflected immediately on the production server.
+  </p>
+  <p>
+    Bugs with the Helpwanted tool can be reported in JIRA's <a href="https://issues.apache.org/jira/browse/COMDEV/component/12329813/">COMDEV project, component Helpwanted</a>.
+  </p>
+</div>
+
+<p style="font-size: 12px; font-family: sans-serif; text-align: center;">
+  Managed by the <a href="http://community.apache.org/">Apache Community Development Project</a>.<br/>
+  Copyright&copy; 2017, the Apache Software Foundation. Licensed under the <a rel="license" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>
+</p>
+</body>
+</html>
