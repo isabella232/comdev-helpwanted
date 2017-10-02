@@ -75,7 +75,7 @@ diff_explanation = [
 ]
 
 # Languages (programming + spoken)
-langs = ['c', 'xml', 'c++', 'c-sharp', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'bash', 'tcl', 'jsp', 'svg']
+langs = ['c', 'xml', 'c++', 'c-sharp', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'pig', 'bash', 'tcl', 'jsp', 'svg']
 spoken_langs = ['english', 'french', 'german', 'spanish', 'russian', 'italian', 'japanese', 'chinese']
 website_langs = ['css','javascript','html']
 
