@@ -75,7 +75,7 @@ diff_explanation = [
 ]
 
 # Languages (programming + spoken)
-langs = ['c', 'xml', 'c++', 'c-sharp', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'pig', 'bash', 'tcl', 'jsp', 'svg']
+langs = ['c', 'xml', 'c++', 'c-sharp', 'objective-c', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'pig', 'bash', 'tcl', 'jsp', 'svg']
 spoken_langs = ['english', 'french', 'german', 'spanish', 'russian', 'italian', 'japanese', 'chinese']
 website_langs = ['css','javascript','html']
 
@@ -277,10 +277,12 @@ reallyPopulate = (json, state) ->
     obj = get('project')
     
     # optgroup for spoken/written
-    optg = mk('optgroup', { label: (if state then 'Non-TLPs:' else 'Top Level Projects:')})
+    optg = mk('optgroup', { label: (if state then 'Podlings:' else 'Top Level Projects:')})
     app(obj, optg)
     
-    for group, data of (json.committees || json.groups)
+    for group, data of (json.committees || json.groups || json.podling)
+        if state == 'podlings' and data.status != "current"
+          continue
         pro.push(group)
         app(obj, mk('option', { value: group}, group ))
     if state
@@ -303,7 +305,7 @@ reallyPopulate = (json, state) ->
         app(obj, mk('option', {value: lang}, lang.replace(/^([a-z])/, (a) => a.toUpperCase()) ))
         opt = document.createElement('option')
     if not state or state == 0
-        fetch('https://whimsy.apache.org/public/public_nonldap_groups.json', 'other', reallyPopulate)
+        fetch('https://whimsy.apache.org/public/public_podlings.json', 'podlings', reallyPopulate)
 
 populateAdminForm = () ->
     fetch('https://whimsy.apache.org/public/public_ldap_committees.json', false, reallyPopulate)   

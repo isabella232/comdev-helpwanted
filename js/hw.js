@@ -135,7 +135,7 @@ diff = ['Beginner', 'Journeyman', 'Intermediate', 'Advanced', 'Expert'];
 
 diff_explanation = ['This is an easy task that anyone can get started on', 'This requires a bit of knowledge of the project, but otherwise is an easy task', 'This requires a good knowledge of the project', 'This requires a good knowledge of the project and good technical skills', 'This requires intimate knowledge of the project and excellent technical skills'];
 
-langs = ['c', 'xml', 'c++', 'c-sharp', 'objective-c', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'pig','bash', 'tcl', 'jsp', 'svg'];
+langs = ['c', 'xml', 'c++', 'c-sharp', 'objective-c', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'pig', 'bash', 'tcl', 'jsp', 'svg'];
 
 spoken_langs = ['english', 'french', 'german', 'spanish', 'russian', 'italian', 'japanese', 'chinese'];
 
@@ -440,12 +440,15 @@ reallyPopulate = function(json, state) {
   pro = [];
   obj = get('project');
   optg = mk('optgroup', {
-    label: (state ? 'Non-TLPs:' : 'Top Level Projects:')
+    label: (state ? 'Podlings:' : 'Top Level Projects:')
   });
   app(obj, optg);
-  ref = json.committees || json.groups;
+  ref = json.committees || json.groups || json.podling;
   for (group in ref) {
     data = ref[group];
+    if (state === 'podlings' && data.status !== "current") {
+      continue;
+    }
     pro.push(group);
     app(obj, mk('option', {
       value: group
@@ -482,7 +485,7 @@ reallyPopulate = function(json, state) {
     opt = document.createElement('option');
   }
   if (!state || state === 0) {
-    return fetch('https://whimsy.apache.org/public/public_nonldap_groups.json', 'other', reallyPopulate);
+    return fetch('https://whimsy.apache.org/public/public_podlings.json', 'podlings', reallyPopulate);
   }
 };
 
