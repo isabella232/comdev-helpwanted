@@ -48,7 +48,6 @@ end
 local function getDoc (ty, id)
     local url = config.es_url  .. ty .. "/" .. id
     local result = http.request(url)
-    local out = {}
     local json = JSON.decode(result)
     if json and json._source then
         json._source.request_id = json._id
@@ -99,7 +98,6 @@ local function raw(query, doctype)
     doctype = doctype or default_doc
     local url = config.es_url .. doctype .. "/_search"
     local result = http.request(url, js)
-    local out = {}
     local json = JSON.decode(result)
     return json or {}, url
 end
@@ -110,7 +108,6 @@ local function update(doctype, id, query)
     doctype = doctype or default_doc
     local url = config.es_url .. doctype .. "/" .. id .. "/_update"
     local result = http.request(url, js)
-    local out = {}
     local json = JSON.decode(result)
     return json or {}, url
 end
@@ -123,7 +120,6 @@ local function index(r, id, ty, body)
     end
     local url = config.es_url .. ty .. "/" .. id
     local result = http.request(url, body)
-    local out = {}
     local json = JSON.decode(result)
     return json or {}
 end
