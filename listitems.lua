@@ -16,6 +16,8 @@
 
 ]]--
 
+--                   DOES NOT APPEAR TO BE USED
+
 local JSON = require 'cjson'
 local elastic = require 'lib/elastic'
 
