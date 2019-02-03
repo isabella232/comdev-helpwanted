@@ -27,7 +27,7 @@ local default_doc = "item"
 
 -- Standard ES query, returns $size results of any doc of type $doc, sorting by $sitem
 function getHits(query, size, doc, sitem)
-    doc = doc or "mbox"
+    doc = doc or default_doc
     sitem = sitem or "epoch"
     size = size or 10
     query = query:gsub(" ", "+")
@@ -60,7 +60,7 @@ end
 -- Get results (a'la getHits), but only return email headers, not the body
 -- provides faster transport when we don't need everything
 function getHeaders(query, size, doc)
-    doc = doc or "mbox"
+    doc = doc or default_doc
     size = size or 10
     query = query:gsub(" ", "+")
     local url = config.es_url  .. doc .. "/_search?_source_exclude=body&q="..query.."&sort=date:desc&size=" .. size
@@ -79,7 +79,7 @@ end
 
 -- Same as above, but reverse return order
 function getHeadersReverse(query, size, doc)
-    doc = doc or "mbox"
+    doc = doc or default_doc
     size = size or 10
     query = query:gsub(" ", "+")
     local url = config.es_url .. doc .. "/_search?_source_exclude=body&q="..query.."&sort=epoch:desc&size=" .. size
