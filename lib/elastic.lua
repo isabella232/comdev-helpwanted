@@ -28,7 +28,7 @@ local default_doc = "item"
 -- Standard ES query, returns $size results of any doc of type $doc, sorting by $sitem (desc)
 local function find(query, size, doc, sitem)
     doc = doc or default_doc
-    sitem = sitem or "epoch"
+    sitem = sitem or "created"
     size = size or 10
     query = query:gsub(" ", "+")
     local url = config.es_url .. doc .. "/_search?q="..query.."&sort=" .. sitem .. ":desc&size=" .. size
