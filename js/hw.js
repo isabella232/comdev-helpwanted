@@ -135,6 +135,11 @@ diff = ['Beginner', 'Journeyman', 'Intermediate', 'Advanced', 'Expert'];
 
 diff_explanation = ['This is an easy task that anyone can get started on', 'This requires a bit of knowledge of the project, but otherwise is an easy task', 'This requires a good knowledge of the project', 'This requires a good knowledge of the project and good technical skills', 'This requires intimate knowledge of the project and excellent technical skills'];
 
+
+/*
+    N.B. Do NOT edit the file js/hw.js. Instead edit js/coffee/hw.coffee and run combine.sh to regenerate hw.js
+ */
+
 langs = ['c', 'xml', 'c++', 'c-sharp', 'objective-c', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'pig', 'bash', 'tcl', 'jsp', 'svg', 'maven', 'gradle'];
 
 spoken_langs = ['english', 'french', 'german', 'spanish', 'russian', 'italian', 'japanese', 'chinese'];

@@ -74,6 +74,9 @@ diff_explanation = [
     'This requires intimate knowledge of the project and excellent technical skills'
 ]
 
+###
+    N.B. Do NOT edit the file js/hw.js. Instead edit js/coffee/hw.coffee and run combine.sh to regenerate hw.js
+###
 # Languages (programming + spoken)
 langs = ['c', 'xml', 'c++', 'c-sharp', 'objective-c', 'java', 'javascript', 'css', 'html', 'perl', 'ruby', 'lua', 'python', 'go', 'rust', 'erlang', 'swift', 'groovy', 'haskell', 'scala', 'php', 'pig', 'bash', 'tcl', 'jsp', 'svg', 'maven', 'gradle']
 spoken_langs = ['english', 'french', 'german', 'spanish', 'russian', 'italian', 'japanese', 'chinese']
