@@ -38,9 +38,26 @@ function handle(r)
     if get.id then
         local doc = nil
         if #get.id == 8 and get.id:match("^([a-f0-9]+)$") then
-            docs = elastic.find('_id:' .. get.id .. "*", 1, 'item', 'created')
-            if docs and #docs == 1 then
-                doc = docs[1]
+--        Cannot use wild-card matching on _id field
+--            docs = elastic.find('_id:' .. get.id .. "*", 1, 'item', 'created')
+--            if docs and #docs == 1 then
+--                doc = docs[1]
+--            end
+            local json
+--          Find all the ids
+            json = elastic.raw {
+                _source = false,
+                size = 250
+            }
+            if json and json.hits and json.hits.hits then
+                for k, v in pairs(json.hits.hits) do
+--                  Find the first matching id
+--                  Should check for multiple matches, but the original code does not either ...
+                    if string.sub(v._id,1,8) == get.id then
+                        doc = elastic.get('item', v._id)
+                        break
+                    end
+                end
             end
         else 
             doc = elastic.get('item', get.id)
