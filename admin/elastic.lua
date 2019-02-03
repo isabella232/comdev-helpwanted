@@ -25,7 +25,7 @@ local config = {
 }
 local default_doc = "item"
 
--- Standard ES query, returns $size results of any doc of type $doc, sorting by $sitem
+-- Standard ES query, returns $size results of any doc of type $doc, sorting by $sitem (desc)
 local function getHits(query, size, doc, sitem)
     doc = doc or default_doc
     sitem = sitem or "epoch"
@@ -53,43 +53,6 @@ local function getDoc (ty, id)
         json._source.request_id = json._id
     end
     return (json and json._source) and json._source or {}
-end
-
--- Get results (a'la getHits), but only return email headers, not the body
--- provides faster transport when we don't need everything
-local function getHeaders(query, size, doc)
-    doc = doc or default_doc
-    size = size or 10
-    query = query:gsub(" ", "+")
-    local url = config.es_url  .. doc .. "/_search?_source_exclude=body&q="..query.."&sort=date:desc&size=" .. size
-    local result = http.request(url)
-    local json = JSON.decode(result)
-    local out = {}
-    if json and json.hits and json.hits.hits then
-        for k, v in pairs(json.hits.hits) do
-            v._source.request_id = v._id
-            table.insert(out, v._source)
-        end
-    end
-    return out
-end
-
--- Same as above, but reverse return order
-local function getHeadersReverse(query, size, doc)
-    doc = doc or default_doc
-    size = size or 10
-    query = query:gsub(" ", "+")
-    local url = config.es_url .. doc .. "/_search?_source_exclude=body&q="..query.."&sort=epoch:desc&size=" .. size
-    local result = http.request(url)
-    local json = JSON.decode(result)
-    local out = {}
-    if json and json.hits and json.hits.hits then
-        for k, v in pairs(json.hits.hits) do
-            v._source.request_id = v._id
-            table.insert(out, 1, v._source)
-        end
-    end
-    return out
 end
 
 -- Do a raw ES query with a JSON query
@@ -124,18 +87,11 @@ local function index(r, id, ty, body)
     return json or {}
 end
 
-local function setDefault(typ)
-    default_doc = typ
-end
-
 -- module defs
 return {
     find = getHits,
-    findFast = getHeaders,
-    findFastReverse = getHeadersReverse,
     get = getDoc,
     raw = raw,
     index = index,
-    default = setDefault,
     update = update
 }
