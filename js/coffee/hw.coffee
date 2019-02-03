@@ -398,12 +398,12 @@ displayItems = (json, state) ->
             add = " <td><a href='/admin/close.lua?id=" + item.request_id + "'>Mark as done</a></td>"
         
         item.description = item.description.replace(/\n/g, "<br/>").replace(hw_weburl, (a) => ("<a href='"+a+"'>"+a+"</a>"))
-        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/></td>" +
+        tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='/images/icon_" + ptype + ".png'/></td>" +
         "<td>" + item.project + "</td>"+
         "<td style='text-align: left;'>" + item.title + "</td>" +
-        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + "</td><td>" + cdate + "</td>" + add + "</tr>"
+        "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='/images/level_" + (parseInt(item.difficulty)+1) + ".png'/> " + diff[item.difficulty] + "</td><td>" + cdate + "</td>" + add + "</tr>"
         
-        tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>"
+        tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>"
      
     tbl += "</table>"
     obj.innerHTML += tbl
@@ -418,7 +418,7 @@ fetchItems = (languages, types, projects, sortBy, par) ->
       types = []
     if not projects
       projects = []
-    fetch("https://helpwanted.apache.org/tasks.lua?lang=" + languages.join(",") + "&type=" + types.join(",") + "&project=" + projects.join(","),
+    fetch("/tasks.lua?lang=" + languages.join(",") + "&type=" + types.join(",") + "&project=" + projects.join(","),
                  {
                     languages: languages,
                     types: types,
@@ -429,7 +429,7 @@ fetchItems = (languages, types, projects, sortBy, par) ->
 
 
 fetchItemsAdmin = () ->
-    fetch("https://helpwanted.apache.org/tasks.lua", {admin: true}, displayItems)
+    fetch("/tasks.lua", {admin: true}, displayItems)
 
 
 renderItem = (json, state) ->
@@ -446,7 +446,7 @@ renderItem = (json, state) ->
     
     json.description = json.description.replace(/\n/g, "<br/>").replace(hw_weburl, (a) => ("<a href='"+a+"'>"+a+"</a>"))
     obj.innerHTML = "<h2>Task #" + state.substring(0,8) + ": " + json.title + "</h2>"
-    mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at https://helpwanted.apache.org/task.html?" + rid + "\n\n")
+    mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at /task.html?" + rid + "\n\n")
     rgba = "rgba(" + p.r + "," + p.g + "," + p.b + ", 1)"
     obj.innerHTML += "<div id='pickerparent' style='background: " + rgba + "; padding:12px;'><p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" +
         "<b>Created by:</b> " + json.author + "@apache.org<br/>" +
@@ -465,4 +465,4 @@ renderItem = (json, state) ->
         "<br/>&nbsp;<br/>&nbsp;<br/></p></div>"
 
 displayItem = (id) ->
-    fetch("https://helpwanted.apache.org/tasks.lua?id=" + id, id, renderItem)
+    fetch("/tasks.lua?id=" + id, id, renderItem)

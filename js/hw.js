@@ -585,8 +585,8 @@ displayItems = function(json, state) {
         return "<a href='" + a + "'>" + a + "</a>";
       };
     })(this));
-    tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='https://helpwanted.apache.org/images/icon_" + ptype + ".png'/></td>" + "<td>" + item.project + "</td>" + "<td style='text-align: left;'>" + item.title + "</td>" + "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='https://helpwanted.apache.org/images/level_" + (parseInt(item.difficulty) + 1) + ".png'/> " + diff[item.difficulty] + "</td><td>" + cdate + "</td>" + add + "</tr>";
-    tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"https://helpwanted.apache.org/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>";
+    tbl += "<tr style='cursor: pointer;' onclick=\"sw('details_" + i + "');\"><td width='68'><div class='itemNumber-yellow'>" + z + "</div><img title='" + item.type + "' style='float: left; width: 24px; height: 24px;' src='/images/icon_" + ptype + ".png'/></td>" + "<td>" + item.project + "</td>" + "<td style='text-align: left;'>" + item.title + "</td>" + "<td>" + lingos + "</td><td title='" + diff_explanation[parseInt(item.difficulty)] + "' style='text-align: left;'><img style='width: 20px; height: 20px; vertical-align: middle;' src='/images/level_" + (parseInt(item.difficulty) + 1) + ".png'/> " + diff[item.difficulty] + "</td><td>" + cdate + "</td>" + add + "</tr>";
+    tbl += "<tr style='display:none;' id='details_" + i + "'><td colspan='6'><b>Project:</b> " + item.project + "<br/><b>Requested by:</b> " + item.author + "@apache.org<br/><b>Created:</b> " + cdate + "<br/><b>Description:</b> <blockquote>" + item.description + "</blockquote><b>Further information: </b> <a href='" + item.url + "'>" + item.url + "</a><br/><input type='button' onclick='location.href=\"/task.html?" + item.request_id + "\";' value='I am interested in this'/></td></tr>";
   }
   tbl += "</table>";
   obj.innerHTML += tbl;
@@ -605,7 +605,7 @@ fetchItems = function(languages, types, projects, sortBy, par) {
   if (!projects) {
     projects = [];
   }
-  return fetch("https://helpwanted.apache.org/tasks.lua?lang=" + languages.join(",") + "&type=" + types.join(",") + "&project=" + projects.join(","), {
+  return fetch("/tasks.lua?lang=" + languages.join(",") + "&type=" + types.join(",") + "&project=" + projects.join(","), {
     languages: languages,
     types: types,
     projects: projects,
@@ -615,7 +615,7 @@ fetchItems = function(languages, types, projects, sortBy, par) {
 };
 
 fetchItemsAdmin = function() {
-  return fetch("https://helpwanted.apache.org/tasks.lua", {
+  return fetch("/tasks.lua", {
     admin: true
   }, displayItems);
 };
@@ -639,14 +639,14 @@ renderItem = function(json, state) {
     };
   })(this));
   obj.innerHTML = "<h2>Task #" + state.substring(0, 8) + ": " + json.title + "</h2>";
-  mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at https://helpwanted.apache.org/task.html?" + rid + "\n\n");
+  mlink = "mailto:dev@" + json.project + ".apache.org?subject=" + escape("Help with task: " + json.title) + "&body=" + escape("I would like to help out with the task listed at /task.html?" + rid + "\n\n");
   rgba = "rgba(" + p.r + "," + p.g + "," + p.b + ", 1)";
   obj.innerHTML += "<div id='pickerparent' style='background: " + rgba + "; padding:12px;'><p style='text-align: left;'><b>Project: </b> " + json.project + "<br/>" + "<b>Created by:</b> " + json.author + "@apache.org<br/>" + "<b>Task added: </b>" + cdate + "<br/>" + "<b>Difficulty: </b> <img style='width: 16px; height: 16px; vertical-align: middle;' src='/images/level_" + (parseInt(json.difficulty) + 1) + ".png'/> " + diff[json.difficulty] + " - " + diff_explanation[parseInt(json.difficulty)] + "<br/>" + "<b>Task type:</b> " + types[json.type] + "<br/>" + (json.url && json.url.length > 10 ? "<b>Additional information:</b> <a href='" + json.url + "'>" + json.url + "</a><br/>" : "") + (json.estimate && json.estimate.length > 0 ? "<b>Estimated time to complete:</b> " + json.estimate : "") + (json.timeout && json.timeout > 0 ? "<b>Task expires:</b> " + new Date(json.timeout * 1000).toDateString() : "") + "<blockquote style='text-align: left;'><q>" + json.description + "</q></blockquote>" + "<br/></p>" + "<h3 style='text-align: left;'>How to help:</h3><p style='text-align: left;'>" + (json.curl && json.curl.length > 10 ? "<b>Contributor's guide for this project: </b><a href='" + json.curl + "'>" + json.curl + "</a><br/>" : "") + "If you want to help with this task, please get in touch with the project at: <a href=\"" + mlink + "\">dev@" + json.project + ".apache.org</a>!" + "<br/>You should also check out the additional information URL (if such is provided above) for more information.";
   return "<br/>&nbsp;<br/>&nbsp;<br/></p></div>";
 };
 
 displayItem = function(id) {
-  return fetch("https://helpwanted.apache.org/tasks.lua?id=" + id, id, renderItem);
+  return fetch("/tasks.lua?id=" + id, id, renderItem);
 };
 
 Number.prototype.pretty = function(fix) {
