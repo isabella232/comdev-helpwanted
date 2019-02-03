@@ -20,8 +20,7 @@
 local http = require 'socket.http'
 local JSON = require 'cjson'
 local config = {
-    es_url = "http://localhost:9200/helpwanted/",
-    maxResults = 100
+    es_url = "http://localhost:9200/helpwanted/"
 }
 local default_doc = "item"
 
