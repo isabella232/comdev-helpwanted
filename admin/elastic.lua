@@ -51,8 +51,10 @@ local function getDoc (ty, id)
     local json = JSON.decode(result)
     if json and json._source then
         json._source.request_id = json._id
+        return json._source
+    else
+        return {}
     end
-    return (json and json._source) and json._source or {}
 end
 
 -- Do a raw ES query with a JSON query
