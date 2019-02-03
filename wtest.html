@@ -13,14 +13,14 @@
     This is a sample widget page. Just an ordinary HTML page with a widget attached by inserting the following code:
     <pre style='background: #FFE; border: 1px solid #666; font-size: 0.8rem;'>
 &lt;div style="width: 700px;" type="helpwanted" project="<span id='pr'>httpd</span>" <span id='tags'></span> description="<span id='pru'>the Apache HTTP Server Project</span>">&lt;/div>
-&lt;script src="https://helpwanted.apache.org/widget.js" type="text/javascript">&lt;/script></pre>
+&lt;script src="/widget.js" type="text/javascript">&lt;/script></pre>
     <div id="foo" style="width: 700px;" type="helpwanted" project="httpd" description="the Apache HTTP Server Project"></div>
     
     <p>Projects can also search the entire foundation task list, or use tags:</p>
     
     <pre style='background: #FFE; border: 1px solid #666; font-size: 0.8rem;'>
 &lt;div style="width: 700px;" type="helpwanted" project="*" tags="GSoC" description="the Apache Software Foundation">&lt;/div>
-&lt;script src="https://helpwanted.apache.org/widget.js" type="text/javascript">&lt;/script></pre>
+&lt;script src="/widget.js" type="text/javascript">&lt;/script></pre>
     <div id="foo2" style="width: 700px;" type="helpwanted" project="*" tags="GSoC" description="the Apache HTTP Server"></div>
     
     
@@ -42,6 +42,6 @@
         document.getElementById('foo').setAttribute("description", "the Apache " + pru + " project")
     }
 </script>
-<script src="https://helpwanted.apache.org/widget.js" type="text/javascript"></script>
+<script src="/widget.js" type="text/javascript"></script>
 </body>
 </html>
