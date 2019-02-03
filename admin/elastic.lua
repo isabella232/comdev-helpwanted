@@ -26,7 +26,7 @@ local config = {
 local default_doc = "item"
 
 -- Standard ES query, returns $size results of any doc of type $doc, sorting by $sitem (desc)
-local function getHits(query, size, doc, sitem)
+local function find(query, size, doc, sitem)
     doc = doc or default_doc
     sitem = sitem or "epoch"
     size = size or 10
@@ -45,7 +45,7 @@ local function getHits(query, size, doc, sitem)
 end
 
 -- Get a single document
-local function getDoc (ty, id)
+local function get (ty, id)
     local url = config.es_url  .. ty .. "/" .. id
     local result = http.request(url)
     local json = JSON.decode(result)
@@ -91,8 +91,8 @@ end
 
 -- module defs
 return {
-    find = getHits,
-    get = getDoc,
+    find = find,
+    get = get,
     raw = raw,
     index = index,
     update = update
