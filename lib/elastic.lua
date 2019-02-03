@@ -64,7 +64,7 @@ local function raw(query, doctype)
     local url = config.es_url .. doctype .. "/_search"
     local result = http.request(url, js)
     local json = JSON.decode(result)
-    return json or {}, url
+    return json or {}
 end
 
 -- Update a document
@@ -74,7 +74,7 @@ local function update(doctype, id, query)
     local url = config.es_url .. doctype .. "/" .. id .. "/_update"
     local result = http.request(url, js)
     local json = JSON.decode(result)
-    return json or {}, url
+    return json or {}
 end
 
 -- Put a new document somewhere
