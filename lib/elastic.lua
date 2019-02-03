@@ -33,7 +33,6 @@ local function getHits(query, size, doc, sitem)
     query = query:gsub(" ", "+")
     local url = config.es_url .. doc .. "/_search?q="..query.."&sort=" .. sitem .. ":desc&size=" .. size
     local result = http.request(url)
-    local out = {}
     local json = JSON.decode(result)
     local out = {}
     if json and json.hits and json.hits.hits then
@@ -65,7 +64,6 @@ local function getHeaders(query, size, doc)
     query = query:gsub(" ", "+")
     local url = config.es_url  .. doc .. "/_search?_source_exclude=body&q="..query.."&sort=date:desc&size=" .. size
     local result = http.request(url)
-    local out = {}
     local json = JSON.decode(result)
     local out = {}
     if json and json.hits and json.hits.hits then
@@ -84,7 +82,6 @@ local function getHeadersReverse(query, size, doc)
     query = query:gsub(" ", "+")
     local url = config.es_url .. doc .. "/_search?_source_exclude=body&q="..query.."&sort=epoch:desc&size=" .. size
     local result = http.request(url)
-    local out = {}
     local json = JSON.decode(result)
     local out = {}
     if json and json.hits and json.hits.hits then
