@@ -26,7 +26,7 @@ local config = {
 local default_doc = "item"
 
 -- Standard ES query, returns $size results of any doc of type $doc, sorting by $sitem
-function getHits(query, size, doc, sitem)
+local function getHits(query, size, doc, sitem)
     doc = doc or default_doc
     sitem = sitem or "epoch"
     size = size or 10
@@ -46,7 +46,7 @@ function getHits(query, size, doc, sitem)
 end
 
 -- Get a single document
-function getDoc (ty, id)
+local function getDoc (ty, id)
     local url = config.es_url  .. ty .. "/" .. id
     local result = http.request(url)
     local out = {}
@@ -59,7 +59,7 @@ end
 
 -- Get results (a'la getHits), but only return email headers, not the body
 -- provides faster transport when we don't need everything
-function getHeaders(query, size, doc)
+local function getHeaders(query, size, doc)
     doc = doc or default_doc
     size = size or 10
     query = query:gsub(" ", "+")
@@ -78,7 +78,7 @@ function getHeaders(query, size, doc)
 end
 
 -- Same as above, but reverse return order
-function getHeadersReverse(query, size, doc)
+local function getHeadersReverse(query, size, doc)
     doc = doc or default_doc
     size = size or 10
     query = query:gsub(" ", "+")
@@ -97,7 +97,7 @@ function getHeadersReverse(query, size, doc)
 end
 
 -- Do a raw ES query with a JSON query
-function raw(query, doctype)
+local function raw(query, doctype)
     local js = JSON.encode(query)
     doctype = doctype or default_doc
     local url = config.es_url .. doctype .. "/_search"
@@ -108,7 +108,7 @@ function raw(query, doctype)
 end
 
 -- Update a document
-function update(doctype, id, query)
+local function update(doctype, id, query)
     local js = JSON.encode({doc = query })
     doctype = doctype or default_doc
     local url = config.es_url .. doctype .. "/" .. id .. "/_update"
@@ -119,7 +119,7 @@ function update(doctype, id, query)
 end
 
 -- Put a new document somewhere
-function index(r, id, ty, body)
+local function index(r, id, ty, body)
     local js = JSON.encode(query)
     if not id then
         id = r:sha1(ty .. (math.random(1,99999999)*os.time()) .. ':' .. r:clock())
@@ -131,7 +131,7 @@ function index(r, id, ty, body)
     return json or {}
 end
 
-function setDefault(typ)
+local function setDefault(typ)
     default_doc = typ
 end
 
